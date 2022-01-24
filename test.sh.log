@@ -1,0 +1,165 @@
+Running test with user anshul
+-- The C compiler identification is GNU 9.3.0
+-- The CXX compiler identification is GNU 9.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Generating ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c from test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c
+-- Building executable including ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c and ../examples/autotest-validate/autotest-validate.c
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/anshul/aesd/assignment-Anshul-99/build
+Scanning dependencies of target unity
+[ 10%] Building C object assignment-autotest/Unity/src/CMakeFiles/unity.dir/unity.c.o
+[ 20%] Linking C static library libunity.a
+[ 20%] Built target unity
+[ 30%] Generating ../../assignment-autotest/test/assignment1/Test_hello_Runner.c, ../../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c, ../../assignment-autotest/test/unity_runner.c
+Test files for auto dependency generation test/assignment1/Test_hello.c test/assignment1/Test_assignment_validate.c
+Autogenerating runner for test/assignment1/Test_hello.c
+Autogenerating runner for test/assignment1/Test_assignment_validate.c
+Autogenerating test/unity_runner.c
+Scanning dependencies of target assignment-autotest
+[ 40%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello.c.o
+[ 50%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o
+[ 60%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o
+[ 70%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.o
+[ 80%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o
+[ 90%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o
+[100%] Linking C executable assignment-autotest
+[100%] Built target assignment-autotest
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:6:test_hello:INFO: Hello!  Your unity setup is working!
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:4:test_hello:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c:9:test_assignment_validate:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+Executing assignment test script
+~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+~/aesd/assignment-Anshul-99/finder-app ~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+rm -f writer
+gcc -Wall -Werror -o writer writer.c 
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Using default value AELD_IS_FUN for string to write
+Using default value 10 for number of files to write
+Writing 10 files containing string AELD_IS_FUN to /tmp/aeld-data
+/tmp/aeld-data created
+The number of files are 10 and the number of matching lines are 10
+success
+Test of assignment assignment2 complete with success
+Running test with user anshul
+-- Generating ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c from test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c
+-- Building executable including ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c and ../examples/autotest-validate/autotest-validate.c
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/anshul/aesd/assignment-Anshul-99/build
+[ 10%] Building C object assignment-autotest/Unity/src/CMakeFiles/unity.dir/unity.c.o
+[ 20%] Linking C static library libunity.a
+[ 20%] Built target unity
+[ 30%] Generating ../../assignment-autotest/test/assignment1/Test_hello_Runner.c, ../../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c, ../../assignment-autotest/test/unity_runner.c
+Test files for auto dependency generation test/assignment1/Test_hello.c test/assignment1/Test_assignment_validate.c
+Autogenerating runner for test/assignment1/Test_hello.c
+Autogenerating runner for test/assignment1/Test_assignment_validate.c
+Autogenerating test/unity_runner.c
+Scanning dependencies of target assignment-autotest
+[ 40%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello.c.o
+[ 50%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o
+[ 60%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o
+[ 70%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.o
+[ 80%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o
+[ 90%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o
+[100%] Linking C executable assignment-autotest
+[100%] Built target assignment-autotest
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:6:test_hello:INFO: Hello!  Your unity setup is working!
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:4:test_hello:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c:9:test_assignment_validate:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+Executing assignment test script
+~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+~/aesd/assignment-Anshul-99/finder-app ~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+rm -f writer
+gcc -Wall -Werror -o writer writer.c 
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Using default value AELD_IS_FUN for string to write
+Using default value 10 for number of files to write
+Writing 10 files containing string AELD_IS_FUN to /tmp/aeld-data
+/tmp/aeld-data created
+The number of files are 10 and the number of matching lines are 10
+success
+Test of assignment assignment2 complete with success
+Running test with user anshul
+-- Generating ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c from test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c
+-- Building executable including ;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c;/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c test/assignment1/Test_hello.c;test/assignment1/Test_assignment_validate.c and ../examples/autotest-validate/autotest-validate.c
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/anshul/aesd/assignment-Anshul-99/build
+[ 10%] Building C object assignment-autotest/Unity/src/CMakeFiles/unity.dir/unity.c.o
+[ 20%] Linking C static library libunity.a
+[ 20%] Built target unity
+[ 30%] Generating ../../assignment-autotest/test/assignment1/Test_hello_Runner.c, ../../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c, ../../assignment-autotest/test/unity_runner.c
+Test files for auto dependency generation test/assignment1/Test_hello.c test/assignment1/Test_assignment_validate.c
+Autogenerating runner for test/assignment1/Test_hello.c
+Autogenerating runner for test/assignment1/Test_assignment_validate.c
+Autogenerating test/unity_runner.c
+Scanning dependencies of target assignment-autotest
+[ 40%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello.c.o
+[ 50%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o
+[ 60%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o
+[ 70%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.o
+[ 80%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o
+[ 90%] Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o
+[100%] Linking C executable assignment-autotest
+[100%] Built target assignment-autotest
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:6:test_hello:INFO: Hello!  Your unity setup is working!
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:4:test_hello:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c:9:test_assignment_validate:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+Executing assignment test script
+~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+~/aesd/assignment-Anshul-99/finder-app ~/aesd/assignment-Anshul-99/assignment-autotest/test/assignment2 ~/aesd/assignment-Anshul-99
+rm -f writer
+gcc -Wall -Werror -o writer writer.c 
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Error: Incorrect number of arguments
+ <executable> <path to file> <string to be written>
+Using default value AELD_IS_FUN for string to write
+Using default value 10 for number of files to write
+Writing 10 files containing string AELD_IS_FUN to /tmp/aeld-data
+/tmp/aeld-data created
+The number of files are 10 and the number of matching lines are 10
+success
+Test of assignment assignment2 complete with success

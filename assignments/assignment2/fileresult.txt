@@ -1,0 +1,10 @@
+anshul@Anshul-UbuntuVM:~/aesd/assignment-Anshul-99/finder-app$ make clean
+rm -f writer
+anshul@Anshul-UbuntuVM:~/aesd/assignment-Anshul-99/finder-app$ make CROSS_COMPILE
+export PATH=ATH:/home/anshul/aesd/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin
+aarch64-none-linux-gnu-gcc -g -Wall -c -o writer.o writer.c
+anshul@Anshul-UbuntuVM:~/aesd/assignment-Anshul-99/finder-app$ file writer.o
+writer.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), with debug_info, not stripped
+anshul@Anshul-UbuntuVM:~/aesd/assignment-Anshul-99/finder-app$ 
+
+
