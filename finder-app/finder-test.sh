@@ -43,7 +43,9 @@ fi
 
 #echo "Removing the old writer utility and compiling as a native application"
 #make clean
+rm -f writer
 #make
+gcc -Wall -Werror -o writer writer.c
 
 for i in $( seq 1 $NUMFILES)
 do

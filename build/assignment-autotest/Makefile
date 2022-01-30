@@ -198,6 +198,33 @@ __/examples/autotest-validate/autotest-validate.c.s:
 	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.s
 .PHONY : __/examples/autotest-validate/autotest-validate.c.s
 
+__/examples/systemcalls/systemcalls.o: __/examples/systemcalls/systemcalls.c.o
+
+.PHONY : __/examples/systemcalls/systemcalls.o
+
+# target to build an object file
+__/examples/systemcalls/systemcalls.c.o:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o
+.PHONY : __/examples/systemcalls/systemcalls.c.o
+
+__/examples/systemcalls/systemcalls.i: __/examples/systemcalls/systemcalls.c.i
+
+.PHONY : __/examples/systemcalls/systemcalls.i
+
+# target to preprocess a source file
+__/examples/systemcalls/systemcalls.c.i:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.i
+.PHONY : __/examples/systemcalls/systemcalls.c.i
+
+__/examples/systemcalls/systemcalls.s: __/examples/systemcalls/systemcalls.c.s
+
+.PHONY : __/examples/systemcalls/systemcalls.s
+
+# target to generate assembly for a file
+__/examples/systemcalls/systemcalls.c.s:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.s
+.PHONY : __/examples/systemcalls/systemcalls.c.s
+
 test/assignment1/Test_assignment_validate.o: test/assignment1/Test_assignment_validate.c.o
 
 .PHONY : test/assignment1/Test_assignment_validate.o
@@ -306,6 +333,60 @@ test/assignment1/Test_hello_Runner.c.s:
 	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.s
 .PHONY : test/assignment1/Test_hello_Runner.c.s
 
+test/assignment3/Test_systemcalls.o: test/assignment3/Test_systemcalls.c.o
+
+.PHONY : test/assignment3/Test_systemcalls.o
+
+# target to build an object file
+test/assignment3/Test_systemcalls.c.o:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o
+.PHONY : test/assignment3/Test_systemcalls.c.o
+
+test/assignment3/Test_systemcalls.i: test/assignment3/Test_systemcalls.c.i
+
+.PHONY : test/assignment3/Test_systemcalls.i
+
+# target to preprocess a source file
+test/assignment3/Test_systemcalls.c.i:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.i
+.PHONY : test/assignment3/Test_systemcalls.c.i
+
+test/assignment3/Test_systemcalls.s: test/assignment3/Test_systemcalls.c.s
+
+.PHONY : test/assignment3/Test_systemcalls.s
+
+# target to generate assembly for a file
+test/assignment3/Test_systemcalls.c.s:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.s
+.PHONY : test/assignment3/Test_systemcalls.c.s
+
+test/assignment3/Test_systemcalls_Runner.o: test/assignment3/Test_systemcalls_Runner.c.o
+
+.PHONY : test/assignment3/Test_systemcalls_Runner.o
+
+# target to build an object file
+test/assignment3/Test_systemcalls_Runner.c.o:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o
+.PHONY : test/assignment3/Test_systemcalls_Runner.c.o
+
+test/assignment3/Test_systemcalls_Runner.i: test/assignment3/Test_systemcalls_Runner.c.i
+
+.PHONY : test/assignment3/Test_systemcalls_Runner.i
+
+# target to preprocess a source file
+test/assignment3/Test_systemcalls_Runner.c.i:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.i
+.PHONY : test/assignment3/Test_systemcalls_Runner.c.i
+
+test/assignment3/Test_systemcalls_Runner.s: test/assignment3/Test_systemcalls_Runner.c.s
+
+.PHONY : test/assignment3/Test_systemcalls_Runner.s
+
+# target to generate assembly for a file
+test/assignment3/Test_systemcalls_Runner.c.s:
+	cd /home/anshul/aesd/assignment-Anshul-99/build && $(MAKE) -f assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.s
+.PHONY : test/assignment3/Test_systemcalls_Runner.c.s
+
 test/unity_runner.o: test/unity_runner.c.o
 
 .PHONY : test/unity_runner.o
@@ -349,6 +430,9 @@ help:
 	@echo "... __/examples/autotest-validate/autotest-validate.o"
 	@echo "... __/examples/autotest-validate/autotest-validate.i"
 	@echo "... __/examples/autotest-validate/autotest-validate.s"
+	@echo "... __/examples/systemcalls/systemcalls.o"
+	@echo "... __/examples/systemcalls/systemcalls.i"
+	@echo "... __/examples/systemcalls/systemcalls.s"
 	@echo "... test/assignment1/Test_assignment_validate.o"
 	@echo "... test/assignment1/Test_assignment_validate.i"
 	@echo "... test/assignment1/Test_assignment_validate.s"
@@ -361,6 +445,12 @@ help:
 	@echo "... test/assignment1/Test_hello_Runner.o"
 	@echo "... test/assignment1/Test_hello_Runner.i"
 	@echo "... test/assignment1/Test_hello_Runner.s"
+	@echo "... test/assignment3/Test_systemcalls.o"
+	@echo "... test/assignment3/Test_systemcalls.i"
+	@echo "... test/assignment3/Test_systemcalls.s"
+	@echo "... test/assignment3/Test_systemcalls_Runner.o"
+	@echo "... test/assignment3/Test_systemcalls_Runner.i"
+	@echo "... test/assignment3/Test_systemcalls_Runner.s"
 	@echo "... test/unity_runner.o"
 	@echo "... test/unity_runner.i"
 	@echo "... test/unity_runner.s"

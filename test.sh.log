@@ -163,3 +163,53 @@ Writing 10 files containing string AELD_IS_FUN to /tmp/aeld-data
 The number of files are 10 and the number of matching lines are 10
 success
 Test of assignment assignment2 complete with success
+Running test with user anshul
+CMake Error: The current CMakeCache.txt directory /home/anshul/aesd/assignment-2-Anshul-99/build/CMakeCache.txt is different than the directory /home/anshul/aesd/assignment-Anshul-99/build where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+CMake Error: The source "/home/anshul/aesd/assignment-2-Anshul-99/CMakeLists.txt" does not match the source "/home/anshul/aesd/assignment-Anshul-99/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
+/bin/sh: 1: cd: can't cd to /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest
+make[2]: *** [assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make:179: assignment-autotest/CMakeFiles/assignment-autotest.dir/clean] Error 2
+make[1]: *** [CMakeFiles/Makefile2:150: assignment-autotest/CMakeFiles/assignment-autotest.dir/clean] Error 2
+make: *** [Makefile:136: clean] Error 2
+CMake Error: The source directory "/home/anshul/aesd/assignment-Anshul-99" does not exist.
+Specify --help for usage, or press the help button on the CMake GUI.
+make: *** [Makefile:210: cmake_check_build_system] Error 1
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:6:test_hello:INFO: Hello!  Your unity setup is working!
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:4:test_hello:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c:9:test_assignment_validate:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+No assignment-test script found for assignment2
+Running test with user anshul
+CMake Error: The current CMakeCache.txt directory /home/anshul/aesd/assignment-2-Anshul-99/build/CMakeCache.txt is different than the directory /home/anshul/aesd/assignment-Anshul-99/build where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+CMake Error: The source "/home/anshul/aesd/assignment-2-Anshul-99/CMakeLists.txt" does not match the source "/home/anshul/aesd/assignment-Anshul-99/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
+/bin/sh: 1: cd: can't cd to /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest
+make[2]: *** [assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make:179: assignment-autotest/CMakeFiles/assignment-autotest.dir/clean] Error 2
+make[1]: *** [CMakeFiles/Makefile2:150: assignment-autotest/CMakeFiles/assignment-autotest.dir/clean] Error 2
+make: *** [Makefile:136: clean] Error 2
+CMake Error: The source directory "/home/anshul/aesd/assignment-Anshul-99" does not exist.
+Specify --help for usage, or press the help button on the CMake GUI.
+make: *** [Makefile:210: cmake_check_build_system] Error 1
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:6:test_hello:INFO: Hello!  Your unity setup is working!
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello.c:4:test_hello:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+/home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c:9:test_assignment_validate:PASS
+
+-----------------------
+1 Tests 0 Failures 0 Ignored 
+OK
+Executing assignment test script
+~/aesd/assignment-2-Anshul-99/assignment-autotest/test/assignment3 ~/aesd/assignment-2-Anshul-99
+starting test with SKIP_BUILD  and DO_VALIDATE 
+~/aesd/assignment-2-Anshul-99/finder-app ~/aesd/assignment-2-Anshul-99/assignment-autotest/test/assignment3 ~/aesd/assignment-2-Anshul-99
+Using passed directory /tmp/aesd-autograder for output
+CLONING GIT LINUX STABLE VERSION v5.1.10 IN /tmp/aesd-autograder
+Cloning into 'linux-stable'...
