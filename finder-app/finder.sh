@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Script for Assignment 1 AESD. It accepts two arguments, a path to directory/file (filesdir) and a text string (searchstr). This script searches for searchstr in all the files present in filesdir. 
 #Author: Anshul Somani

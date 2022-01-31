@@ -10,6 +10,7 @@ WRITESTR=AELD_IS_FUN
 WRITEDIR=/tmp/aeld-data
 username=$(cat conf/username.txt)
 
+
 if [ $# -lt 2 ]
 then
 	echo "Using default value ${WRITESTR} for string to write"
@@ -43,13 +44,13 @@ fi
 
 #echo "Removing the old writer utility and compiling as a native application"
 #make clean
-rm -f writer
+#rm -f writer
 #make
-gcc -Wall -Werror -o writer writer.c
+#aarch64-none-linux-gnu-gcc -g -Wall -c -o writer.o writer.c
 
 for i in $( seq 1 $NUMFILES)
 do
-	./writer.sh "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+	./writer "$WRITEDIR/${username}$i.txt" "$WRITESTR"
 done
 
 OUTPUTSTRING=$(./finder.sh "$WRITEDIR" "$WRITESTR")

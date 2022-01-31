@@ -80,28 +80,6 @@ examples/autotest-validate/autotest-validate.h
 
 /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/unity_runner.c
 
-/home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.c
-systemcalls.h
-/home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.h
-errno.h
-/home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/errno.h
-stdlib.h
--
-syslog.h
--
-stdio.h
--
-unistd.h
--
-sys/types.h
--
-sys/wait.h
--
-string.h
--
-fcntl.h
--
-
 /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.h
 stdio.h
 -
