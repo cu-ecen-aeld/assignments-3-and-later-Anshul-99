@@ -4,8 +4,8 @@
 assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o: ../examples/autotest-validate/autotest-validate.c
 assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o: ../examples/autotest-validate/autotest-validate.h
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o: ../examples/systemcalls/systemcalls.c
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o: ../examples/systemcalls/systemcalls.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o: ../examples/threading/threading.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o: ../examples/threading/threading.h
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o: ../assignment-autotest/Unity/src/unity.h
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o: ../assignment-autotest/Unity/src/unity_internals.h
@@ -25,19 +25,15 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hel
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o: ../assignment-autotest/Unity/src/unity_internals.h
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/Unity/src/unity.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/Unity/src/unity_internals.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/examples/autotest-validate/autotest-validate.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/test/assignment3/Test_systemcalls.c
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/test/assignment3/file_write_commands.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../examples/systemcalls/systemcalls.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: ../assignment-autotest/Unity/src/unity.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: ../assignment-autotest/Unity/src/unity_internals.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: ../assignment-autotest/test/assignment4/Test_threading.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: ../examples/threading/threading.h
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/Unity/src/unity.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/Unity/src/unity_internals.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/examples/autotest-validate/autotest-validate.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/test/assignment3/file_write_commands.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../examples/systemcalls/systemcalls.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: ../assignment-autotest/Unity/src/unity.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: ../assignment-autotest/Unity/src/unity_internals.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: ../assignment-autotest/test/assignment4/Test_threading_Runner.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: ../examples/threading/threading.h
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o: ../assignment-autotest/test/unity_runner.c
 

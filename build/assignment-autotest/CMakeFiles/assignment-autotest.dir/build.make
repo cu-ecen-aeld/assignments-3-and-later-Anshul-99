@@ -59,15 +59,15 @@ include assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
 
 ../assignment-autotest/test/assignment1/Test_hello_Runner.c: ../assignment-autotest/test/assignment1/Test_hello.c
 ../assignment-autotest/test/assignment1/Test_hello_Runner.c: ../assignment-autotest/test/assignment1/Test_assignment_validate.c
-../assignment-autotest/test/assignment1/Test_hello_Runner.c: ../assignment-autotest/test/assignment3/Test_systemcalls.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ../../assignment-autotest/test/assignment1/Test_hello_Runner.c, ../../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c, ../../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c, ../../assignment-autotest/test/unity_runner.c"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && ../../assignment-autotest/auto_generate.sh test/assignment1/Test_hello.c test/assignment1/Test_assignment_validate.c test/assignment3/Test_systemcalls.c
+../assignment-autotest/test/assignment1/Test_hello_Runner.c: ../assignment-autotest/test/assignment4/Test_threading.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ../../assignment-autotest/test/assignment1/Test_hello_Runner.c, ../../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c, ../../assignment-autotest/test/assignment4/Test_threading_Runner.c, ../../assignment-autotest/test/unity_runner.c"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && ../../assignment-autotest/auto_generate.sh test/assignment1/Test_hello.c test/assignment1/Test_assignment_validate.c test/assignment4/Test_threading.c
 
 ../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
 	@$(CMAKE_COMMAND) -E touch_nocreate ../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c
 
-../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
-	@$(CMAKE_COMMAND) -E touch_nocreate ../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
+../assignment-autotest/test/assignment4/Test_threading_Runner.c: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
+	@$(CMAKE_COMMAND) -E touch_nocreate ../assignment-autotest/test/assignment4/Test_threading_Runner.c
 
 ../assignment-autotest/test/unity_runner.c: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
 	@$(CMAKE_COMMAND) -E touch_nocreate ../assignment-autotest/test/unity_runner.c
@@ -98,18 +98,18 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_ass
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.s"
 	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate.c -o CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.s
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o: ../assignment-autotest/test/assignment3/Test_systemcalls.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o   -c /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o: ../assignment-autotest/test/assignment4/Test_threading.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o   -c /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading.c
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.i"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls.c > CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.i
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.i"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading.c > CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.i
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.s"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls.c -o CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.s
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.s"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading.c -o CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.s
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
@@ -137,18 +137,18 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_ass
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.s"
 	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c -o CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.s
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o: ../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o   -c /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o: ../assignment-autotest/test/assignment4/Test_threading_Runner.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o   -c /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading_Runner.c
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.i"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls_Runner.c > CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.i
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.i"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading_Runner.c > CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.i
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.s"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls_Runner.c -o CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.s
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.s"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading_Runner.c -o CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.s
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
 assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o: ../examples/autotest-validate/autotest-validate.c
@@ -163,18 +163,18 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-vali
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.s"
 	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/examples/autotest-validate/autotest-validate.c -o CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.s
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o: ../examples/systemcalls/systemcalls.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o   -c /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o: ../examples/threading/threading.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anshul/aesd/assignment-Anshul-99/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o   -c /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.c
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.i"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.c > CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.i
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.i"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.c > CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.i
 
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.s"
-	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.c -o CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.s
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.s"
+	cd /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.c -o CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.s
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o: assignment-autotest/CMakeFiles/assignment-autotest.dir/flags.make
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o: ../assignment-autotest/test/unity_runner.c
@@ -193,12 +193,12 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.s: cm
 assignment__autotest_OBJECTS = \
 "CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello.c.o" \
 "CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o" \
-"CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o" \
+"CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o" \
 "CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o" \
 "CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.o" \
-"CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o" \
+"CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o" \
 "CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o" \
-"CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o" \
+"CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o" \
 "CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o"
 
 # External object files for target assignment-autotest
@@ -206,12 +206,12 @@ assignment__autotest_EXTERNAL_OBJECTS =
 
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o
-assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o
+assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hello_Runner.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate_Runner.c.o
-assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o
+assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o
-assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o
+assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o
 assignment-autotest/assignment-autotest: assignment-autotest/CMakeFiles/assignment-autotest.dir/build.make
 assignment-autotest/assignment-autotest: assignment-autotest/Unity/src/libunity.a
@@ -230,7 +230,7 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/clean:
 
 assignment-autotest/CMakeFiles/assignment-autotest.dir/depend: ../assignment-autotest/test/assignment1/Test_hello_Runner.c
 assignment-autotest/CMakeFiles/assignment-autotest.dir/depend: ../assignment-autotest/test/assignment1/Test_assignment_validate_Runner.c
-assignment-autotest/CMakeFiles/assignment-autotest.dir/depend: ../assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
+assignment-autotest/CMakeFiles/assignment-autotest.dir/depend: ../assignment-autotest/test/assignment4/Test_threading_Runner.c
 assignment-autotest/CMakeFiles/assignment-autotest.dir/depend: ../assignment-autotest/test/unity_runner.c
 	cd /home/anshul/aesd/assignment-Anshul-99/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/anshul/aesd/assignment-Anshul-99 /home/anshul/aesd/assignment-Anshul-99/assignment-autotest /home/anshul/aesd/assignment-Anshul-99/build /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest /home/anshul/aesd/assignment-Anshul-99/build/assignment-autotest/CMakeFiles/assignment-autotest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : assignment-autotest/CMakeFiles/assignment-autotest.dir/depend

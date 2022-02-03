@@ -4,9 +4,9 @@
 assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/autotest-validate/autotest-validate.c.o
  /home/anshul/aesd/assignment-Anshul-99/examples/autotest-validate/autotest-validate.c
  /home/anshul/aesd/assignment-Anshul-99/examples/autotest-validate/autotest-validate.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/systemcalls/systemcalls.c.o
- /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.c
- /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/__/examples/threading/threading.c.o
+ /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.c
+ /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.h
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_assignment_validate.c.o
  ../assignment-autotest/Unity/src/unity.h
  ../assignment-autotest/Unity/src/unity_internals.h
@@ -25,19 +25,15 @@ assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment1/Test_hel
  ../assignment-autotest/Unity/src/unity.h
  ../assignment-autotest/Unity/src/unity_internals.h
  /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment1/Test_hello_Runner.c
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls.c.o
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading.c.o
  ../assignment-autotest/Unity/src/unity.h
  ../assignment-autotest/Unity/src/unity_internals.h
- ../assignment-autotest/examples/autotest-validate/autotest-validate.h
- /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls.c
- /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/file_write_commands.h
- /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.h
-assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment3/Test_systemcalls_Runner.c.o
+ /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading.c
+ /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.h
+assignment-autotest/CMakeFiles/assignment-autotest.dir/test/assignment4/Test_threading_Runner.c.o
  ../assignment-autotest/Unity/src/unity.h
  ../assignment-autotest/Unity/src/unity_internals.h
- ../assignment-autotest/examples/autotest-validate/autotest-validate.h
- /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/Test_systemcalls_Runner.c
- /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment3/file_write_commands.h
- /home/anshul/aesd/assignment-Anshul-99/examples/systemcalls/systemcalls.h
+ /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/assignment4/Test_threading_Runner.c
+ /home/anshul/aesd/assignment-Anshul-99/examples/threading/threading.h
 assignment-autotest/CMakeFiles/assignment-autotest.dir/test/unity_runner.c.o
  /home/anshul/aesd/assignment-Anshul-99/assignment-autotest/test/unity_runner.c
