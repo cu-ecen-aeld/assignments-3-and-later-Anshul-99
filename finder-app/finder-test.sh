@@ -27,13 +27,13 @@ else
 fi
 
 #FILE1=finder
-FILE2=writer
-which $FILE1 #$FILE2
-echo $?
-if [ $? -ne 0 ];
-then
-	echo "ERROR: $?" 
-fi
+#FILE2=writer
+#which $FILE1 #$FILE2
+#echo $?
+#if [ $? -ne 0 ];
+#then
+#	echo "ERROR: $?" 
+#fi
 
 MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines are ${NUMFILES}"
 
