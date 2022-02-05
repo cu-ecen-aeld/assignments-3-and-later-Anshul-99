@@ -6,7 +6,9 @@ CC = $(CROSS_COMPILE)gcc
 
 CFLAGS = -g -Wall -Werror
 
-#default: writer
+all: writer
+
+default: writer
 
 writer: writer.o
 	$(CC) $< -o $@
@@ -17,6 +19,6 @@ writer.o: writer.c
 clean: 
 	rm -f writer writer.o
 	
-all: writer
+
 
 .PHONY: clean

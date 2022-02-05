@@ -26,12 +26,13 @@ else
 	WRITESTR=$2
 fi
 
-FILE1=writer
-FILE2=finder
-which $FILE1 $FILE2
-if [ $? -gt 0 ];
+#FILE1=finder
+FILE2=writer
+which $FILE1 #$FILE2
+echo $?
+if [ $? -ne 0 ];
 then
-	echo "ERROR: WRITER/FINDER NOT in PATH" 
+	echo "ERROR: $?" 
 fi
 
 MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines are ${NUMFILES}"
