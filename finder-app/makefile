@@ -19,6 +19,4 @@ writer.o: writer.c
 clean: 
 	rm -f writer writer.o
 	
-
-
 .PHONY: clean
