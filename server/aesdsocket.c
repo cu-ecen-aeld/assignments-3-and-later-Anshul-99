@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -14,9 +15,28 @@
 
 #define SERVICE_PORT "9000"
 #define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
-#define BYTES 1024
+#define BYTES 128
 
-int main()
+int socket_fd =0;
+int socket_fd_connected =0;
+
+char* incoming_data;
+
+//TODO: define a function that handles the cleaning up and is called when returning due to error
+
+static void sig_handler (int signo)
+{
+	if((signo == SIGINT) || (signo == SIGTERM) || (signo == SIGKILL))
+	{
+		//freeaddrinfo(servinfo);
+		unlink(PATH_TO_FILE);
+		free(incoming_data);
+		close(socket_fd_connected);
+		close(socket_fd);
+	}
+}
+
+int main(int argc , char** argv)
 {
 	
 	/*Start syslog daemon*/
@@ -24,14 +44,18 @@ int main()
 	int errnum =0;
 	int ret_val;
 
-	int socket_fd =0;
-	int socket_fd_connected =0;
+
 	const char *service_port = SERVICE_PORT;
 	
 	int fd;
 	
 	int total_bytes = 0; 
-	char static_buff[16];
+	char static_buff[BYTES];
+	
+	
+	signal(SIGINT, sig_handler);
+	signal(SIGTERM, sig_handler);
+	signal(SIGKILL, sig_handler);
 
 
 /******************************************************
@@ -114,7 +138,7 @@ int main()
 	if(ret_val == -1)
 	{
 		errnum = errno; //error logging			
-		syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
+		
 		
 		printf("close() returned error %d\n\r", errnum);
 		freeaddrinfo(servinfo);
@@ -122,18 +146,39 @@ int main()
 		return -1;
 	}
 	
-	//freeaddrinfo(servinfo);
+	freeaddrinfo(servinfo);
 	
+/******************************************************
+
+	creating a daemon only if -d is given as argument
+	daemon();
+	listen()...
+	
+******************************************************/
+
+	if((argc >1) && (strcmp((char*)argv[1], "-d") == 0))
+	{
+		ret_val = daemon(0,0);
+		if(ret_val == -1)
+		{
+			errnum =errno;
+			syslog(LOG_ERR, "daemon() returned error. The error was %s\n", strerror(errnum));
+			printf("Error: daemon() returned error %d\n\r", errnum);
+			
+		}
+	}
 
 	
-	int z = 4;
-	while(z--)	
+	
+	
+	
+
+	while(1)	
 	{	
-		char* incoming_data = (char *)malloc(BYTES*sizeof(char));
+		incoming_data = (char *)malloc(BYTES*sizeof(char));
 		if(incoming_data == NULL)
 		{
 			printf("malloc failed\n\r");
-			freeaddrinfo(servinfo);
 			return -1;
 		}
 
@@ -152,8 +197,8 @@ int main()
 			syslog(LOG_ERR, "listen() returned error. The error was %s\n", strerror(errnum));
 			
 			printf("Error: listen() returned error %d\n\r", errnum);
-
-			freeaddrinfo(servinfo);
+			
+			free(incoming_data);
 			return -1;
 		}
 		
@@ -172,7 +217,7 @@ int main()
 			
 			printf("Error: accept() returned error %d\n\r", errnum);
 			
-			freeaddrinfo(servinfo);
+			//free(incoming_data);
 			return -1;
 		}
 		
@@ -202,43 +247,57 @@ int main()
 
 		while(!completed)
 		{
-			memset(&static_buff[0], 0, 16);
+			memset(&static_buff[0], 0, BYTES);
 			
-			msg_length = recv(socket_fd_connected, &static_buff[0], 16,0); // MSG_WAITALL
+			msg_length = recv(socket_fd_connected, &static_buff[0], BYTES, 0); // MSG_WAITALL
 			if(msg_length <0)
 			{
 				errnum = errno;
 				syslog(LOG_ERR, "recv() returned error. The error was %s\n", strerror(errnum));
 				printf("No more data is available to read. recv() returned error %d\n\r", errnum);
+				
+				free(incoming_data);
+				return -1;
 			}
 			else if(msg_length == 0)
 			{
 			//TODO:
 				printf("No more messages\n\r");
-				//completed = 1;
+				completed = 1;
 				break;
 			}
-			//TODO: can add a condition if msg_length == 16 then directly realloc
 			
-			for(int i = 0; i<16; i++)
+			int i =0;
+			for(i = 0; i<BYTES; i++)
 			{
 				if(static_buff[i] == 10)
 				{
-					num_bytes = i+1;
+					//num_bytes = i+1;
+					//++i;
 					completed = 1;
 					break;
 				}
+				
 			}
-			printf("sB %s ", &static_buff[0]);
+			//printf("sB %s ", &static_buff[0]);
+			if(i == BYTES)
+			{
+				num_bytes = i;
+			}
+			else
+			{
+				num_bytes = ++i;
+			}
 			
-			total_bytes += num_bytes;
+			total_bytes += num_bytes; // (i+1)
 			printf("total_bytes: %d\n\r", total_bytes);
 			//printf("num_bytes: %d\n\r",num_bytes);
 			
-			incoming_data = (char *)realloc(incoming_data, (total_bytes+1));
+			incoming_data = (char *)realloc(incoming_data, (total_bytes));
 			if(incoming_data == NULL)
 			{
 				printf("realloc failed\n\r");
+				free(incoming_data);
 				return -1;
 			}	
 			
@@ -248,7 +307,7 @@ int main()
 			//printf("data: %s", incoming_data);	
 		}
 		//printf("length_recv: %ld\n\r", sizeof(incoming_data));
-		printf("recv: %s", incoming_data);
+		//printf("recv: %s", incoming_data);
 	
 /******************************************************
 
@@ -264,6 +323,9 @@ int main()
 			syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
 			
 			printf("open() returned error %d\n\r", errnum);
+			
+			free(incoming_data);
+			return -1;
 		}
 		
 		//printf("total_bytes: %d\n\r", total_bytes);
@@ -275,6 +337,8 @@ int main()
 			syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errnum));
 			
 			printf("write() returned error %d\n\r", errnum);
+			
+			free(incoming_data);
 			return -1;
 		}
 		else if(ret_val != strlen(incoming_data))
@@ -282,7 +346,8 @@ int main()
 			syslog(LOG_ERR, "Partial Write\n\r");
 			
 			printf("partial Write\n\r");
-			return -1;
+			
+			//return -1;
 		}
 		printf("Written: %d\n\r", ret_val);
 		ret_val = close(fd);
@@ -292,6 +357,9 @@ int main()
 			syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
 			
 			printf("close() returned error %d\n\r", errnum);
+			
+			free(incoming_data);
+			return -1;
 		}
 		
 		
@@ -316,10 +384,13 @@ int main()
 			syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
 			
 			printf("open() returned error %d\n\r", errnum);
+			
+			free(incoming_data);
+			return  -1;	
 		}
 		
 		lseek(fd, 0, SEEK_SET);
-		printf("send: ");
+		//printf("send: ");
 		while(bytes--)
 		{
 			//outgoing_data = (char *)malloc(total_bytes*(sizeof(char)));
@@ -332,10 +403,13 @@ int main()
 				syslog(LOG_ERR, "read() returned error. The error was %s\n", strerror(errnum));
 				
 				printf("read() returned error %d\n\r", errnum);
+				
+				free(incoming_data);
+				return -1;
 			}
 			
 			//printf("ret_val_read: %d\n\r", ret_val);
-			printf("%s", &buff);
+			//printf("%s", &buff);
 			ret_val = send(socket_fd_connected, &buff, 1, 0);
 			if(ret_val == -1)
 			{
@@ -343,6 +417,9 @@ int main()
 				syslog(LOG_ERR, "send() returned error. The error was %s\n", strerror(errnum));
 				
 				printf("send() returned error %d\n\r", errnum);
+				
+				free(incoming_data);
+				return -1;
 			}	
 			//printf("ret_val_rsend: %d\n\r", ret_val);
 			
@@ -357,10 +434,10 @@ int main()
 			printf("close() returned error %d\n\r", errnum);
 			freeaddrinfo(servinfo);
 			remove(PATH_TO_FILE);
+			free(incoming_data);
 			return -1;
 		}
 			
-		//free(outgoing_data);
 		free(incoming_data);
 		
 		syslog(LOG_DEBUG, "Closed Connection from %s\n\r", ip_addr);
@@ -368,204 +445,7 @@ int main()
 	}
 	
 	close(socket_fd_connected);
-	freeaddrinfo(servinfo);	
 	close(socket_fd);
+	unlink(PATH_TO_FILE);
 
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*int fd = open(PATH_TO_FILE, O_RDWR | O_CREAT | O_APPEND, 0644);
-	
-	//TODO: while() check if SIGINT or SIGTERM is received
-
-	int z =3;
-	while(z--)
-	{
-		
-		//listen()
-		ret_val = listen(socket_fd, 10); 
-		if(ret_val == -1)
-		{
-			errnum = errno;
-			syslog(LOG_ERR, "listen() returned error. The error was %s\n", strerror(errno));
-			
-			printf("Error: listen() returned error %d\n\r", errnum);
-		}
-		
-		addr_size = sizeof servinfo_connectingaddr;
-		//accept()
-		socket_fd_connected = accept(socket_fd, (struct sockaddr *)&servinfo_connectingaddr, &addr_size);
-		if(socket_fd_connected == -1)
-		{
-			errnum = errno;
-			syslog(LOG_ERR, "accept() returned error. The error was %s\n", strerror(errno));
-			
-			printf("Error: accept() returned error %d\n\r", errnum);
-		}
-		
-		//read/write using recv()/send()
-	
-		
-		
-		char* incoming_data = (char *)malloc(BYTES*sizeof(char)); // realloc if buffer is full 
-		// Read , write and re-read again. 
-		// read byte by byte 
-		if(incoming_data == NULL)
-		{
-			printf("Unable to malloc\n\r");
-			return -1;
-		}
-		
-		ssize_t msg_length = 0;
-		
-		uint8_t rx_complete =0;
-		
-		
-		while(1)
-		{
-			uint32_t index_buffer = 0;
-			msg_length = recv(socket_fd_connected, incoming_data, BYTES, MSG_DONTWAIT);
-			if(msg_length == -1)
-			{
-				errnum = errno; //error logging
-				
-				
-				if(errnum == 11)
-				{
-					printf("Recv() complete\n\r");
-					break;
-				}
-				
-				syslog(LOG_ERR, "recv() returned error. The error was %s\n", strerror(errno));
-				// No more messages available 
-				printf("No more data is available to read. recv() returned error %d\n\r", errnum);
-				//write to file 
-				rx_complete = 1; //set complete flag
-				
-			}
-			else
-			{
-				total_message_len += msg_length;
-			}
-			
-					//check if complete flag is set and exit loop
-			if(rx_complete)
-			{
-				break;
-			}
-		
-			//  write into the file byte by byte
-			//while(index_buffer<msg_length) 
-			{
-
-				//write the byte into the file
-				ret_val = write(fd, incoming_data, msg_length);
-				if(ret_val == -1)
-				{
-					errnum = errno; //error logging			
-					syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errno));
-					
-					printf("write() returned error %d\n\r", errnum);
-				}
-				printf("W: %s\n\r", &incoming_data[index_buffer]);
-					
-				//index_buffer++;
-			}
-		}
-		
-		char *outgoing_data = (char *)(malloc(total_message_len*sizeof(char)));
-		
-		//fd = open(PATH_TO_FILE, O_RDWR, 0644);
-		lseek(fd, 0, SEEK_SET);
-		ret_val = read(fd, outgoing_data, total_message_len);
-		if(ret_val == -1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "read() returned error. The error was %s\n", strerror(errno));
-			
-			printf("read() returned error %d\n\r", errnum);
-		}
-		printf("retval: %d\n\r", ret_val);
-		printf("T: %d\n\r", total_message_len);
-		printf("R: %s", outgoing_data);
-		
-		//send()
-		ret_val = send(socket_fd_connected, outgoing_data, total_message_len, MSG_DONTWAIT);
-		if(ret_val == -1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "send() returned error. The error was %s\n", strerror(errno));
-			
-			printf("send() returned error %d\n\r", errnum);
-		}
-		printf("retval: %d\n\r", ret_val);
-		
-		
-		free(incoming_data);
-		free(outgoing_data);
-		close(socket_fd_connected);
-		
-		
-	}
-	
-	close(fd);
-	if(ret_val == -1)
-	{
-		errnum = errno; //error logging			
-		syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errno));
-		
-		printf("close() returned error %d\n\r", errnum);
-	}
-	freeaddrinfo(servinfo);
-	remove("/var/tmp/aesdsocketdata.txt");
-	
-	close(socket_fd);
-} */		
-	
-
-
-	
-
-
