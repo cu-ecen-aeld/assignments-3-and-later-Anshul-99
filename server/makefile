@@ -15,7 +15,7 @@ appl=aesdsocket
 	
 .PHONY: clean	
 clean: 
-	rm -f aesdsocket aesdsocket.o
+	rm -f $(appl) *.o
 	
 
 
