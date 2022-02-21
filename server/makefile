@@ -11,11 +11,11 @@ default: aesdsocket
 aesdsocket: aesdsocket.o
 	$(CC) -o aesdsocket aesdsocket.o
 	
-appl=aesdsocket
+#appl=aesdsocket
 	
 .PHONY: clean	
 clean: 
-	rm -f $(appl) *.o
+	rm -f writer writer.o #rm -f $(appl) *.o
 	
 
 
