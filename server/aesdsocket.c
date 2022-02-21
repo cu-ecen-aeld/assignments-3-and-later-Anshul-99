@@ -104,6 +104,26 @@ int main(int argc , char** argv)
 	
 /******************************************************
 
+	setsockopt()
+	
+******************************************************/
+
+	int optval = 1;
+	int optlen = sizeof(optval);
+
+	ret_val = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR,&optval, &optlen);
+	if(ret_val == -1)
+	{
+		errnum = errno;
+		syslog(LOG_ERR, "setsockopt() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("Error: setsockopt() returned error %d\n\r", errnum);
+		freeaddrinfo(servinfo);
+		return -1;
+	}
+	
+/******************************************************
+
 	bind()
 	
 ******************************************************/

@@ -3,11 +3,9 @@
 	
 #CROSS_COMPILE =
 CC=$(CROSS_COMPILE)gcc
-
-CFLAGS=-g -Wall -Werror
+CFLAGS=-Werror -Wall -g
 
 all: aesdsocket
-
 default: aesdsocket
 
 aesdsocket: aesdsocket.o
@@ -15,9 +13,9 @@ aesdsocket: aesdsocket.o
 	
 appl=aesdsocket
 	
+.PHONY: clean	
 clean: 
 	rm -f aesdsocket aesdsocket.o
 	
-.PHONY: clean
 
-#valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --lof-file=/tmp/valgrind-out.txt ./aesdsocket
+
