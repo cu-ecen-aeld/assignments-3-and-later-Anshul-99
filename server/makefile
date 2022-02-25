@@ -3,19 +3,19 @@
 	
 #CROSS_COMPILE =
 CC=$(CROSS_COMPILE)gcc
-CFLAGS=-Werror -Wall -g
+CFLAGS=-Werror -Wall -g  #adding pthread here gives an error stating undefined reference to pthread_create() and pthread_join() in aesdsocket.c
 
 all: aesdsocket
 default: aesdsocket
 
 aesdsocket: aesdsocket.o
-	$(CC) -o aesdsocket aesdsocket.o
+	$(CC) -pthread -o aesdsocket aesdsocket.o
 	
 #appl=aesdsocket
 	
 .PHONY: clean	
 clean: 
-	rm -f writer writer.o #rm -f $(appl) *.o
+	 rm -f aesdsocket aesdsocket.o #rm -f $(appl) *.o #
 	
 
 
