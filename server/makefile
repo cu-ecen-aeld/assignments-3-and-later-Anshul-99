@@ -18,7 +18,7 @@ all: aesdsocket
 default: aesdsocket
 
 aesdsocket: aesdsocket.o
-	${CC} ${CFLAGS} -o aesdsocket aesdsocket.o ${LDFLAGS} 
+	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDES) $(LDFLAGS) #${CC} ${CFLAGS} -o aesdsocket aesdsocket.o ${LDFLAGS} 
 
 #appl=aesdsocket
 	
