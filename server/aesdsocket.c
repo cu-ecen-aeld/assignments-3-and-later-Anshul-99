@@ -9,6 +9,8 @@
 #include <signal.h>
 #include <pthread.h>
 #include <sys/queue.h>
+#include <time.h>
+#include <sys/time.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +20,8 @@
 #define SERVICE_PORT "9000"
 #define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
 #define BYTES 128
+
+SLIST_HEAD(slisthead, thread_info) head;
 
 int socket_fd =0;
 int socket_fd_connected =0;
@@ -38,13 +42,22 @@ int ret_val;
 int return_val = 0;
 
 int total_bytes = 0;
+int num_threads =0;
 
-//char* incoming_data;
+
+char time_ptr[40];
+//char *time_ptr = NULL;
+//char min[5];
+//char date[5];
+//char day[5];
+//char month[5];
+//char year[5];
+
+
 
 typedef struct thread_info thread_info_t;
 struct thread_info
 {
-//TODO: add client data to the struct
 	pthread_t thread_id;
 	int terminate_thread_flag;
 	SLIST_ENTRY(thread_info) entries;
@@ -59,12 +72,103 @@ static void sig_handler (int signo)
 {
 	if((signo == SIGINT) || (signo == SIGTERM) || (signo == SIGKILL))
 	{
+		printf("Num threads: %d\n\r", num_threads);
+		
+		thread_info_t *p = NULL;
+		while(!SLIST_EMPTY(&head))
+		{
+			p = SLIST_FIRST(&head);
+			SLIST_REMOVE_HEAD(&head, entries);
+			pthread_join(p->thread_id, NULL);
+			free(p);
+		}
+		
 		//freeaddrinfo(servinfo);
 		unlink(PATH_TO_FILE);
 		//free(incoming_data);
 		close(socket_fd_connected);
 		close(socket_fd);
 	}
+}
+
+void alarm_handler(int signum)
+{
+	time_t rawtime = time(NULL);
+	struct tm *ptm = localtime(&rawtime);
+
+	if(ptm == NULL)
+	{
+		errnum =errno;
+		syslog(LOG_ERR, "localtime() returned error. The error was %s\n", strerror(errnum));
+		printf("Error: localtime() returned error %d\n\r", errnum);
+	}
+	strftime(&time_ptr[0], 40, "%a %b %d %Y %H:%M:%S", ptm);
+
+	printf("Time: %s\n\r", &time_ptr[0]);
+	
+	pthread_mutex_lock (&mutex_aesdsocketdata_file);
+
+	int fd = open(PATH_TO_FILE, O_WRONLY|O_APPEND , 0644);
+	if(fd<0)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("open() returned error %d\n\r", errnum);
+	}
+
+	
+	char *timestamp = "timestamp:";
+	
+	ret_val = write(fd, timestamp, (sizeof(timestamp)+2));
+	if(ret_val == -1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("write() returned error %d\n\r", errnum);
+	}
+	total_bytes+= ret_val;
+	
+	int i = 0;
+	while(time_ptr[i] != '\0')
+	{
+		printf("%c", time_ptr[i]);
+		ret_val = write(fd, &time_ptr[i], 1);
+		if(ret_val == -1)
+		{
+			errnum = errno; //error logging			
+			syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errnum));
+			
+			printf("write() returned error %d\n\r", errnum);
+		}
+		i++;
+		total_bytes++;
+	}
+	
+	ret_val = write(fd, "\n", 1);
+	if(ret_val == -1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("write() returned error %d\n\r", errnum);
+	}
+	total_bytes++;
+
+	ret_val = close(fd);
+	if(ret_val == -1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("close() returned error %d\n\r", errnum);
+	}
+	
+	syslog(LOG_DEBUG, "TIMESTAMP: %s\n", &time_ptr[0]);
+	// Unlock mutex 
+	pthread_mutex_unlock (&mutex_aesdsocketdata_file);
+	return;
 }
 
 int setup_comm()
@@ -179,12 +283,6 @@ int setup_comm()
 	return 0;
 }
 
-int check_for_connection()
-{
-
-		return 0;
-}
-
 
 void * thread_func(void *thread_data)
 {
@@ -195,192 +293,58 @@ void * thread_func(void *thread_data)
 	
 ******************************************************/		
 
-	//while(1)
-	//{
-		 
-		ssize_t msg_length = 0;
-
-		//int num_bytes = 0;
-		//char static_buff[BYTES];
-		 
-		//char* outgoing_data = NULL;
-		uint8_t completed = 0;
-		int fd;
-		
-		printf("Thread ID: %ld\n\r", ((thread_info_t *)thread_data)->thread_id);
-		
-		//TODO: Rewrite this code to recv() and write() byte by byte
-		
-		char temp_buff;
-		
-		ret_val = pthread_mutex_lock (&mutex_aesdsocketdata_file);	
-		
-			
-		fd = open(PATH_TO_FILE, O_WRONLY|O_APPEND , 0644);
-		if(fd<0)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("open() returned error %d\n\r", errnum);
-			
-			free(incoming_data);
-			return_val = -1;
-			return &return_val;
-		}
-		
-		while(!completed)
-		{
-			msg_length = recv(((thread_info_t *)thread_data)->sockfd_connected, &temp_buff, 1, 0);
-			if(msg_length <0)
-			{
-				errnum = errno;
-				syslog(LOG_ERR, "recv() returned error. The error was %s\n", strerror(errnum));
-				printf("No more data is available to read. recv() returned error %d\n\r", errnum);
-				
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}
-			else if(msg_length == 0)
-			{
-				printf("No more messages\n\r");
-				completed = 1;
-				break;
-			}
-			
-			if(temp_buff == '\n')
-			{
-				completed = 1;
-				//break;
-			}
-			total_bytes++;
-			
-			ret_val = write(fd, &temp_buff, 1);
-			if(ret_val == -1)
-			{
-				errnum = errno; //error logging			
-				syslog(LOG_ERR, "write() returned error. The error was %s\n", strerror(errnum));
-				
-				printf("write() returned error %d\n\r", errnum);
-				
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}
-		}
-		
-		ret_val = close(fd);
-		if(ret_val == -1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("close() returned error %d\n\r", errnum);
-			
-			free(incoming_data);
-			return_val = -1;
-			return &return_val;
-		}
-		
-		//TODO: Unlock mutex 
-		pthread_mutex_unlock (&mutex_aesdsocketdata_file);
-
-		/*while(!completed)
-		{
-			memset(&static_buff[0], 0, BYTES);
-			
-			msg_length = recv(((thread_info_t *)thread_data)->sockfd_connected, &static_buff[0], BYTES, 0); 
-			if(msg_length <0)
-			{
-				errnum = errno;
-				syslog(LOG_ERR, "recv() returned error. The error was %s\n", strerror(errnum));
-				printf("No more data is available to read. recv() returned error %d\n\r", errnum);
-				
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}
-			else if(msg_length == 0)
-			{
-				printf("No more messages\n\r");
-				completed = 1;
-				break;
-			}
-			
-			int i =0;
-			for(i = 0; i<BYTES; i++)
-			{
-				if(static_buff[i] == 10)
-				{
-					//num_bytes = i+1;
-					//++i;
-					completed = 1;
-					break;
-				}
-				
-			}
-			
-			//printf("sB %s ", &static_buff[0]);
-			
-			if(i == BYTES)
-			{
-				num_bytes = i;
-			}
-			else
-			{
-				num_bytes = ++i;
-			}
-			
-			total_bytes += num_bytes; // (i+1)
-			printf("total_bytes: %d\n\r", total_bytes);
-			//printf("num_bytes: %d\n\r",num_bytes);
-			
-			incoming_data = (char *)realloc(incoming_data, (total_bytes));
-			if(incoming_data == NULL)
-			{
-				printf("realloc failed\n\r");
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}	
-			
-			//printf("data: %s", incoming_data);
-			
-			strncat(incoming_data, &static_buff[0],num_bytes);	
-			printf("data: %s", incoming_data);	
-		}
-		//printf("length_recv: %ld\n\r", sizeof(incoming_data));
-		printf("recv: %s", incoming_data);*/
+	ssize_t msg_length = 0;
+	uint8_t completed = 0;
+	int fd;
+	char temp_buff;
 	
-/******************************************************
-
-	writing the realloc() buffer into aesdsocketdata.txt
-	using write()
+	printf("Thread ID: %ld\n\r", ((thread_info_t *)thread_data)->thread_id);
 	
-******************************************************/	
-
-			
-		//TODO: Lock mutex or wait if in use by some other thread		
-		/*ret_val = pthread_mutex_lock (&mutex_aesdsocketdata_file);	
+	printf("Thread: %ld  Locked mutex\n\r", ((thread_info_t *)thread_data)->thread_id);
+	pthread_mutex_lock (&mutex_aesdsocketdata_file);	
 		
-			
-		fd = open(PATH_TO_FILE, O_WRONLY|O_APPEND , 0644);
-		if(fd<0)
+	printf("Thread: %ld  Opened file\n\r", ((thread_info_t *)thread_data)->thread_id);
+	fd = open(PATH_TO_FILE, O_WRONLY|O_APPEND , 0644);
+	if(fd<0)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
+		
+		printf("open() returned error %d\n\r", errnum);
+		
+		return_val = -1;
+		return &return_val;
+	}
+		
+	printf("Thread: %ld  Entering recv()/write() loop\n\r", ((thread_info_t *)thread_data)->thread_id);
+	while(!completed)
+	{
+		msg_length = recv(((thread_info_t *)thread_data)->sockfd_connected, &temp_buff, 1, 0);
+		if(msg_length <0)
 		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
+			errnum = errno;
+			syslog(LOG_ERR, "recv() returned error. The error was %s\n", strerror(errnum));
+			printf("No more data is available to read. recv() returned error %d\n\r", errnum);
 			
-			printf("open() returned error %d\n\r", errnum);
-			
-			free(incoming_data);
 			return_val = -1;
 			return &return_val;
 		}
+		else if(msg_length == 0)
+		{
+			printf("No more messages\n\r");
+			completed = 1;
+			break;
+		}
 		
-		//printf("total_bytes: %d\n\r", total_bytes);
+		if(temp_buff == '\n')
+		{
+			completed = 1;
+			//break;
+		}
+		total_bytes++;
+		//printf("%c", temp_buff);
 		
-		ret_val = write(fd, incoming_data, strlen(incoming_data));
+		ret_val = write(fd, &temp_buff, 1);
 		if(ret_val == -1)
 		{
 			errnum = errno; //error logging			
@@ -388,34 +352,32 @@ void * thread_func(void *thread_data)
 			
 			printf("write() returned error %d\n\r", errnum);
 			
-			free(incoming_data);
 			return_val = -1;
 			return &return_val;
 		}
-		else if(ret_val != strlen(incoming_data))
-		{
-			syslog(LOG_ERR, "Partial Write\n\r");
-			
-			printf("partial Write\n\r");
-			
-			//return -1;
-		}
-		printf("Written: %d\n\r", ret_val);
-		ret_val = close(fd);
-		if(ret_val == -1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("close() returned error %d\n\r", errnum);
-			
-			free(incoming_data);
-			return_val = -1;
-			return &return_val;
-		}
+	}
+	printf("Thread: %ld  Exited recv()/write() loop\n\r", ((thread_info_t *)thread_data)->thread_id);
+	
+	ret_val = close(fd);
+	if(ret_val == -1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
 		
-		//TODO: Unlock mutex 
-		pthread_mutex_unlock (&mutex_aesdsocketdata_file);	*/
+		printf("close() returned error %d\n\r", errnum);
+		
+		return_val = -1;
+		return &return_val;
+	}
+	printf("Thread: %ld  Closed file\n\r", ((thread_info_t *)thread_data)->thread_id);
+	
+	// Unlock mutex 
+	pthread_mutex_unlock (&mutex_aesdsocketdata_file);
+	printf("Thread: %ld  Unlocked mutex\n\r", ((thread_info_t *)thread_data)->thread_id);
+
+		
+	
+
 		
 		
 /******************************************************
@@ -427,83 +389,44 @@ void * thread_func(void *thread_data)
 
 		
 		
-		int bytes = total_bytes; //strlen(incoming_data);
-		char buff;
-		
-		//printf("bytes: %d\n\r", bytes);
+	int bytes = total_bytes; //strlen(incoming_data);
+	char buff;
+	
+	//printf("bytes: %d\n\r", bytes);
 
-		//TODO: Lock mutex
-		pthread_mutex_lock (&mutex_aesdsocketdata_file);	
+	// Lock mutex
+	pthread_mutex_lock (&mutex_aesdsocketdata_file);	
+	printf("Thread: %ld  Locked mutex\n\r", ((thread_info_t *)thread_data)->thread_id);
+	
+	printf("Thread: %ld  Opened file\n\r", ((thread_info_t *)thread_data)->thread_id);
+	fd = open(PATH_TO_FILE, O_RDONLY, 0644);
+	if(fd<0)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
 		
-		fd = open(PATH_TO_FILE, O_RDONLY, 0644);
-		if(fd<0)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "open() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("open() returned error %d\n\r", errnum);
-			
-			free(incoming_data);
-			return_val = -1;
-			return &return_val;
-		}
+		printf("open() returned error %d\n\r", errnum);
 		
-		//TODO: replace lseek() because in multithreading applications, each thread's lseek call will vary the absolute file offset.
-		// Not an issue because open() and close() calls are also locked by mutex
-		//ret_val = lseek(fd, 0, SEEK_SET);
-		if(ret_val == 1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "lseek() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("lseek() returned error %d\n\r", errnum);
-		}
-		//printf("lseek(): %d\n\r", ret_val);
-		//printf("send: ");
-		while(bytes--)
-		{
-			//outgoing_data = (char *)malloc(total_bytes*(sizeof(char)));
-			
-			
-			ret_val = read(fd, &buff, 1);
-			if(ret_val == -1)
-			{
-				errnum = errno; //error logging			
-				syslog(LOG_ERR, "read() returned error. The error was %s\n", strerror(errnum));
-				
-				printf("read() returned error %d\n\r", errnum);
-				
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}
-			
-			//printf("ret_val_read: %d\n\r", ret_val);
-			//printf("%s", &buff);
-			
-			//TODO: Lock mutex or wait if in use by some other thread
-			
-			ret_val = send(((thread_info_t *)thread_data)->sockfd_connected, &buff, 1, 0);
-			if(ret_val == -1)
-			{
-				errnum = errno; //error logging			
-				syslog(LOG_ERR, "send() returned error. The error was %s\n", strerror(errnum));
-				
-				printf("send() returned error %d\n\r", errnum);
-				
-				free(incoming_data);
-				return_val = -1;
-				return &return_val;
-			}	
-			//printf("ret_val_rsend: %d\n\r", ret_val);
-			
-			//TODO: Unlock mutex 
-			
-		}
+		return_val = -1;
+		return &return_val;
+	}
 		
-		/*char *outgoing = (char *)malloc(bytes*sizeof(char));
+	printf("Thread: %ld  lseek()\n\r", ((thread_info_t *)thread_data)->thread_id);
+	//TODO: replace lseek() because in multithreading applications, each thread's lseek call will vary the absolute file offset.
+	// Not an issue because open() and close() calls are also locked by mutex
+	ret_val = lseek(fd, 0, SEEK_SET);
+	if(ret_val == 1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "lseek() returned error. The error was %s\n", strerror(errnum));
 		
-		ret_val = read(fd, outgoing, bytes);
+		printf("lseek() returned error %d\n\r", errnum);
+	}
+
+	printf("Thread: %ld  enter read()/send() loop \n\r", ((thread_info_t *)thread_data)->thread_id);
+	while(bytes--)
+	{
+		ret_val = read(fd, &buff, 1);
 		if(ret_val == -1)
 		{
 			errnum = errno; //error logging			
@@ -511,14 +434,13 @@ void * thread_func(void *thread_data)
 			
 			printf("read() returned error %d\n\r", errnum);
 			
-			free(incoming_data);
 			return_val = -1;
 			return &return_val;
 		}
 		
-		printf("outgoing : %s", outgoing);
+		//printf("%c", buff);
 		
-		ret_val = send(((thread_info_t *)thread_data)->sockfd_connected, outgoing, bytes, 0);
+		ret_val = send(((thread_info_t *)thread_data)->sockfd_connected, &buff, 1, 0);
 		if(ret_val == -1)
 		{
 			errnum = errno; //error logging			
@@ -526,40 +448,37 @@ void * thread_func(void *thread_data)
 			
 			printf("send() returned error %d\n\r", errnum);
 			
-			free(incoming_data);
 			return_val = -1;
 			return &return_val;
-		}	
-		else if(ret_val != bytes)
-		{
-			printf("Complete string not sent\n\r");
-		}*/
+		}				
+	}
+	printf("Thread: %ld  exited read()/send() loop\n\r", ((thread_info_t *)thread_data)->thread_id);
 		
+	printf("Thread: %ld  file closed\n\r", ((thread_info_t *)thread_data)->thread_id);
+	ret_val = close(fd);
+	if(ret_val == -1)
+	{
+		errnum = errno; //error logging			
+		syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
 		
-		ret_val = close(fd);
-		if(ret_val == -1)
-		{
-			errnum = errno; //error logging			
-			syslog(LOG_ERR, "close() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("close() returned error %d\n\r", errnum);
-			freeaddrinfo(servinfo);
-			remove(PATH_TO_FILE);
-			free(incoming_data);
-			return_val = -1;
-			return &return_val;
-		}
-			
-		//free(incoming_data);
+		printf("close() returned error %d\n\r", errnum);
+		freeaddrinfo(servinfo);
+		remove(PATH_TO_FILE);
+		return_val = -1;
+		return &return_val;
+	}
 		
-		syslog(LOG_DEBUG, "Closed Connection from %s\n\r", ip_addr);
-		printf("Closed Connection from %s\n\r", ip_addr);
-		
-		//TODO: Unlock mutex
-		pthread_mutex_unlock (&mutex_aesdsocketdata_file);	
-	//}
+	//free(incoming_data);
 	
+	
+	
+	// Unlock mutex
+	pthread_mutex_unlock (&mutex_aesdsocketdata_file);
+	printf("Thread: %ld  Unlocked mutex\n\r", ((thread_info_t *)thread_data)->thread_id);	
+
 	((thread_info_t *)thread_data)->terminate_thread_flag =1;
+	//TODO:syslog(LOG_DEBUG, "Closed Connection from %s\n\r", ip_addr);
+	printf("Closed Connection from %s\n\r", ip_addr);
 	return_val = 0;
 	return &return_val;
 		
@@ -572,15 +491,18 @@ int main(int argc , char** argv)
 	/*Start syslog daemon*/
     openlog("aesdsocket", LOG_USER, LOG_DEBUG|LOG_ERR); 
 
-	int num_threads =0;
-
-		
-
 	
+
+/******************************************************
+
+	signal()
 	
+******************************************************/
 	signal(SIGINT, sig_handler);
 	signal(SIGTERM, sig_handler);
 	signal(SIGKILL, sig_handler);
+	signal(SIGALRM, alarm_handler);
+	//alarm(10);
 	
 /******************************************************
 
@@ -590,7 +512,7 @@ int main(int argc , char** argv)
 
 	//thread_info_t *datap = NULL;
 	
-	SLIST_HEAD(slisthead, thread_info) head;
+	
 	//struct slisthead *headp;
 	SLIST_INIT(&head);
 	//headp = head;
@@ -603,7 +525,7 @@ int main(int argc , char** argv)
 ******************************************************/
 
 	
-	
+	//created as a global variable
 	/*unlock it ?*/
 
 	
@@ -644,14 +566,14 @@ int main(int argc , char** argv)
 	//int z = 1;
 	while(1)	
 	{	
-		incoming_data = (char *)malloc(BYTES*sizeof(char));
+		/*incoming_data = (char *)malloc(BYTES*sizeof(char));
 		if(incoming_data == NULL)
 		{
 			printf("malloc failed\n\r");
 			return -1;
 		}
 
-		memset(incoming_data, 0, BYTES);
+		memset(incoming_data, 0, BYTES);*/
 	
 
 /******************************************************
@@ -668,9 +590,9 @@ int main(int argc , char** argv)
 			
 			printf("Error: listen() returned error %d\n\r", errnum);
 			
-			free(incoming_data);
 			return -1;
 		}
+		
 		
 		
 /******************************************************
@@ -687,7 +609,6 @@ int main(int argc , char** argv)
 			
 			printf("Error: accept() returned error %d\n\r", errnum);
 			
-			//free(incoming_data);
 			return -1;
 		}
 		
@@ -697,7 +618,7 @@ int main(int argc , char** argv)
 		struct sockaddr_in *addr = (struct sockaddr_in *)&servinfo_connectingaddr;
 		
 		inet_ntop(AF_INET, &(addr->sin_addr), ip_addr, INET_ADDRSTRLEN);
-		syslog(LOG_DEBUG, "Accepted Connection from %s\n\r", ip_addr);
+		//TODO:syslog(LOG_DEBUG, "Accepted Connection from %s\n\r", ip_addr);
 		printf("Accepting connection from %s\n\r", ip_addr);
 		
 /******************************************************
@@ -707,7 +628,7 @@ int main(int argc , char** argv)
 ******************************************************/
 
 		thread_info_t *ptr; 
-		ptr = (thread_info_t *)malloc(sizeof(thread_info_t));
+		ptr = (thread_info_t *)malloc(sizeof(thread_info_t)); //TODO: valgrind says memory leak
 		
 		pthread_create(&(ptr->thread_id), NULL, thread_func, ptr);
 		
@@ -716,6 +637,21 @@ int main(int argc , char** argv)
 		//TODO: Enter connection parameter from socket
 		ptr->sockfd_connected = socket_fd_connected;
 		num_threads++;
+		syslog(LOG_DEBUG, "thread allocated %ld\n", ptr->thread_id);
+		
+		struct itimerval delay;
+	
+		delay.it_value.tv_sec = 10;
+		delay.it_value.tv_usec = 0;
+		delay.it_interval.tv_sec = 10;
+		delay.it_interval.tv_usec =0;
+		ret_val = setitimer(ITIMER_REAL, &delay, NULL);
+		if(ret_val)
+		{
+			errnum =errno;
+			syslog(LOG_ERR, "setitimer() returned error. The error was %s\n", strerror(errnum));
+			printf("Error: setitimer() returned error %d\n\r", errnum);
+		}
 
 /******************************************************
 
@@ -723,8 +659,7 @@ int main(int argc , char** argv)
 	and then remove thread ID from linked list
 	
 ******************************************************/
-
-		//pthread_join(*(ptr->thread_id), NULL);	
+	
 		/* join only if the terminate flag is set */
 
 		/* loop through the list to check if terminate flag is set 
@@ -740,6 +675,7 @@ int main(int argc , char** argv)
 		{
 			if(ptr_temp->terminate_thread_flag == 1)
 			{
+				syslog(LOG_DEBUG, "thread deallocated %ld\n", ptr_temp->thread_id);
 				close(ptr_temp->sockfd_connected);
 				pthread_join(ptr_temp->thread_id, NULL);
 				p = ptr_temp;
@@ -747,9 +683,14 @@ int main(int argc , char** argv)
 				SLIST_REMOVE(&head, p, thread_info, entries);
 				free(p);
 				num_threads--;
+				
+				
+			}
+			else
+			{
+				ptr_temp = SLIST_NEXT(ptr_temp, entries);
 			}
 		}
-		//printf("END\n\r");
 	
 	}
 	
