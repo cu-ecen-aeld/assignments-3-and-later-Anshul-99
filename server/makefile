@@ -1,16 +1,25 @@
 # Author: Anshul Somani
 # This makefile builds an executable for writer.c for two different targets, native and aarch64-none-linux-gnu.
 	
-#CROSS_COMPILE =
-CC=$(CROSS_COMPILE)gcc
-CFLAGS=-Werror -Wall -g  #adding pthread here gives an error stating undefined reference to pthread_create() and pthread_join() in aesdsocket.c
+
+ifeq ($(CC),)
+	CC=$(CROSS_COMPILE)gcc	
+endif
+ifeq ($(CFLAGS),)
+	CFLAGS=-Werror -Wall -g  	
+endif
+ifeq ($(LDFLAGS),)
+	LDFLAGS=-pthread	
+endif
+
+
 
 all: aesdsocket
 default: aesdsocket
 
 aesdsocket: aesdsocket.o
-	$(CC) -pthread -o aesdsocket aesdsocket.o
-	
+	${CC} ${CFLAGS} -o aesdsocket aesdsocket.o ${LDFLAGS} 
+
 #appl=aesdsocket
 	
 .PHONY: clean	
