@@ -18,13 +18,13 @@ all: aesdsocket
 default: aesdsocket
 
 aesdsocket: aesdsocket.o
-	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDES) $(LDFLAGS) #${CC} ${CFLAGS} -o aesdsocket aesdsocket.o ${LDFLAGS} 
+	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDES) $(LDFLAGS) 
 
 #appl=aesdsocket
 	
 .PHONY: clean	
 clean: 
-	 rm -f aesdsocket aesdsocket.o #rm -f $(appl) *.o #
+	 rm -f aesdsocket aesdsocket.o 
 	
 
 
