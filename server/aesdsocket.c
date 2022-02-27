@@ -70,7 +70,7 @@ pthread_mutex_t mutex_aesdsocketdata_file = PTHREAD_MUTEX_INITIALIZER;
 
 static void sig_handler (int signo)
 {
-	if((signo == SIGINT) || (signo == SIGTERM) || (signo == SIGKILL))
+	if((signo == SIGINT) || (signo == SIGTERM) /*|| (signo == SIGKILL)*/)
 	{
 		printf("Num threads: %d\n\r", num_threads);
 		
@@ -500,7 +500,7 @@ int main(int argc , char** argv)
 ******************************************************/
 	signal(SIGINT, sig_handler);
 	signal(SIGTERM, sig_handler);
-	signal(SIGKILL, sig_handler);
+	//signal(SIGKILL, sig_handler);
 	signal(SIGALRM, alarm_handler);
 	//alarm(10);
 	
