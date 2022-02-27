@@ -16,6 +16,10 @@
 #include <string.h>
 #include <stdio.h>
 
+/*eval "$(ssh-agent -s)"
+ ssh-add ~/.ssh/aeld_id_rsa_nopassphrase
+*/
+
 
 #define SERVICE_PORT "9000"
 #define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
@@ -43,15 +47,11 @@ int return_val = 0;
 
 int total_bytes = 0;
 int num_threads =0;
+int z =1;
 
 
 char time_ptr[40];
-//char *time_ptr = NULL;
-//char min[5];
-//char date[5];
-//char day[5];
-//char month[5];
-//char year[5];
+
 
 
 
@@ -83,9 +83,7 @@ static void sig_handler (int signo)
 			free(p);
 		}
 		
-		//freeaddrinfo(servinfo);
 		unlink(PATH_TO_FILE);
-		//free(incoming_data);
 		close(socket_fd_connected);
 		close(socket_fd);
 	}
@@ -220,9 +218,6 @@ int setup_comm()
 	
 ******************************************************/
 
-	//int optval = 1;
-	//int optlen = sizeof(optval);
-
 	ret_val = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)); //&optval, optlen
 	if(ret_val == -1)
 	{
@@ -339,10 +334,8 @@ void * thread_func(void *thread_data)
 		if(temp_buff == '\n')
 		{
 			completed = 1;
-			//break;
 		}
 		total_bytes++;
-		//printf("%c", temp_buff);
 		
 		ret_val = write(fd, &temp_buff, 1);
 		if(ret_val == -1)
@@ -389,10 +382,9 @@ void * thread_func(void *thread_data)
 
 		
 		
-	int bytes = total_bytes; //strlen(incoming_data);
+	int bytes = total_bytes; 
 	char buff;
-	
-	//printf("bytes: %d\n\r", bytes);
+
 
 	// Lock mutex
 	pthread_mutex_lock (&mutex_aesdsocketdata_file);	
@@ -412,8 +404,6 @@ void * thread_func(void *thread_data)
 	}
 		
 	printf("Thread: %ld  lseek()\n\r", ((thread_info_t *)thread_data)->thread_id);
-	//TODO: replace lseek() because in multithreading applications, each thread's lseek call will vary the absolute file offset.
-	// Not an issue because open() and close() calls are also locked by mutex
 	ret_val = lseek(fd, 0, SEEK_SET);
 	if(ret_val == 1)
 	{
@@ -437,8 +427,6 @@ void * thread_func(void *thread_data)
 			return_val = -1;
 			return &return_val;
 		}
-		
-		//printf("%c", buff);
 		
 		ret_val = send(((thread_info_t *)thread_data)->sockfd_connected, &buff, 1, 0);
 		if(ret_val == -1)
@@ -467,8 +455,7 @@ void * thread_func(void *thread_data)
 		return_val = -1;
 		return &return_val;
 	}
-		
-	//free(incoming_data);
+	
 	
 	
 	
@@ -477,7 +464,7 @@ void * thread_func(void *thread_data)
 	printf("Thread: %ld  Unlocked mutex\n\r", ((thread_info_t *)thread_data)->thread_id);	
 
 	((thread_info_t *)thread_data)->terminate_thread_flag =1;
-	//TODO:syslog(LOG_DEBUG, "Closed Connection from %s\n\r", ip_addr);
+	syslog(LOG_DEBUG, "Closed Connection from %s\n\r", ip_addr);
 	printf("Closed Connection from %s\n\r", ip_addr);
 	return_val = 0;
 	return &return_val;
@@ -502,7 +489,6 @@ int main(int argc , char** argv)
 	signal(SIGTERM, sig_handler);
 	//signal(SIGKILL, sig_handler);
 	signal(SIGALRM, alarm_handler);
-	//alarm(10);
 	
 /******************************************************
 
@@ -510,12 +496,8 @@ int main(int argc , char** argv)
 	
 ******************************************************/
 
-	//thread_info_t *datap = NULL;
-	
-	
-	//struct slisthead *headp;
+
 	SLIST_INIT(&head);
-	//headp = head;
 
 
 /******************************************************
@@ -526,7 +508,6 @@ int main(int argc , char** argv)
 
 	
 	//created as a global variable
-	/*unlock it ?*/
 
 	
 /******************************************************
@@ -540,7 +521,6 @@ int main(int argc , char** argv)
 		return -1;
 	}
 	
-	/* what happens if no connection on listen() */
 
 	
 /******************************************************
@@ -563,19 +543,9 @@ int main(int argc , char** argv)
 		}
 	}
 
-	//int z = 1;
+
 	while(1)	
 	{	
-		/*incoming_data = (char *)malloc(BYTES*sizeof(char));
-		if(incoming_data == NULL)
-		{
-			printf("malloc failed\n\r");
-			return -1;
-		}
-
-		memset(incoming_data, 0, BYTES);*/
-	
-
 /******************************************************
 
 	listen()
@@ -605,11 +575,19 @@ int main(int argc , char** argv)
 		if(socket_fd_connected == -1)
 		{
 			errnum = errno;
-			syslog(LOG_ERR, "accept() returned error. The error was %s\n", strerror(errnum));
-			
-			printf("Error: accept() returned error %d\n\r", errnum);
-			
-			return -1;
+			if(errnum != 9)
+			{
+				syslog(LOG_ERR, "accept() returned error. The error was %s\n", strerror(errnum));
+				
+				printf("Error: accept() returned error %d\n\r", errnum);
+				close(socket_fd);
+				return -1;
+			}
+			else if(errnum ==9)
+			{
+				close(socket_fd);
+				return 0;
+			}
 		}
 		
 
@@ -618,7 +596,7 @@ int main(int argc , char** argv)
 		struct sockaddr_in *addr = (struct sockaddr_in *)&servinfo_connectingaddr;
 		
 		inet_ntop(AF_INET, &(addr->sin_addr), ip_addr, INET_ADDRSTRLEN);
-		//TODO:syslog(LOG_DEBUG, "Accepted Connection from %s\n\r", ip_addr);
+		syslog(LOG_DEBUG, "Accepted Connection from %s\n\r", ip_addr);
 		printf("Accepting connection from %s\n\r", ip_addr);
 		
 /******************************************************
