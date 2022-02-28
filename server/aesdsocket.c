@@ -601,8 +601,8 @@ int main(int argc , char** argv)
 	
 ******************************************************/
 
-		thread_info_t *ptr; 
-		ptr = (thread_info_t *)malloc(sizeof(thread_info_t)); //TODO: valgrind says memory leak
+		thread_info_t *ptr = (thread_info_t *)malloc(sizeof(thread_info_t));
+		//ptr =  //TODO: valgrind says memory leak
 		
 		pthread_create(&(ptr->thread_id), NULL, thread_func, ptr);
 		
