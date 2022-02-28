@@ -16,10 +16,6 @@
 #include <string.h>
 #include <stdio.h>
 
-/*eval "$(ssh-agent -s)"
- ssh-add ~/.ssh/aeld_id_rsa_nopassphrase
-*/
-
 
 #define SERVICE_PORT "9000"
 #define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
