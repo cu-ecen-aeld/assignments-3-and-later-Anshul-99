@@ -82,6 +82,7 @@ static void sig_handler (int signo)
 		unlink(PATH_TO_FILE);
 		close(socket_fd_connected);
 		close(socket_fd);
+		z =0;
 	}
 }
 
@@ -540,7 +541,7 @@ int main(int argc , char** argv)
 	}
 
 
-	while(1)	
+	while(z)	
 	{	
 /******************************************************
 
@@ -570,20 +571,17 @@ int main(int argc , char** argv)
 		socket_fd_connected = accept(socket_fd, (struct sockaddr *)&servinfo_connectingaddr, &addr_size);
 		if(socket_fd_connected == -1)
 		{
-			errnum = errno;
-			if(errnum != 9)
-			{
-				syslog(LOG_ERR, "accept() returned error. The error was %s\n", strerror(errnum));
-				
-				printf("Error: accept() returned error %d\n\r", errnum);
-				close(socket_fd);
-				return -1;
-			}
-			else if(errnum ==9)
+			if(z ==0)
 			{
 				close(socket_fd);
 				return 0;
 			}
+			errnum = errno;
+			syslog(LOG_ERR, "accept() returned error. The error was %s\n", strerror(errnum));
+			
+			printf("Error: accept() returned error %d\n\r", errnum);
+			close(socket_fd);
+			return -1;
 		}
 		
 
@@ -602,8 +600,7 @@ int main(int argc , char** argv)
 ******************************************************/
 
 		thread_info_t *ptr = (thread_info_t *)malloc(sizeof(thread_info_t));
-		//ptr =  //TODO: valgrind says memory leak
-		
+
 		pthread_create(&(ptr->thread_id), NULL, thread_func, ptr);
 		
 		SLIST_INSERT_HEAD(&head, ptr, entries);
