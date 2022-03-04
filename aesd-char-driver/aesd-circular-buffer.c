@@ -15,6 +15,7 @@
 #endif
 
 #include "aesd-circular-buffer.h"
+#include "syslog.h"
 
 /**
  * @param buffer the buffer to search for corresponding offset.  Any necessary locking must be performed by caller.
@@ -29,9 +30,59 @@
 struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct aesd_circular_buffer *buffer,
 			size_t char_offset, size_t *entry_offset_byte_rtn )
 {
-    /**
-    * TODO: implement per description
-    */
+
+	uint8_t temp_index = (buffer->out_offs);
+	size_t temp = 0;
+	size_t temp2 = char_offset;
+	
+	if(buffer->full)
+	{
+		for(int i = 0; i<AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
+		{
+			temp =  ((buffer->entry[temp_index]).size);
+			
+			if(temp > temp2)
+			{
+				syslog(LOG_DEBUG, "Temp_: %ld\n", temp);
+				*(entry_offset_byte_rtn) = temp2;
+				return &(buffer->entry[temp_index]);
+			}
+			/*else if(temp == temp2)
+			{
+				syslog(LOG_DEBUG, "Temp2_: %ld\n", temp2);
+				*(entry_offset_byte_rtn) = temp2 - temp;
+				temp_index = ((temp_index +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+				return &(buffer->entry[temp_index]);
+			}*/
+			else
+			{
+				temp_index = ((temp_index +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+				temp2 -= temp;
+			}
+		}
+	}
+	else
+	{
+		/* When buffer isn't full */
+		while(temp_index != (buffer->in_offs))
+		{
+			temp =  ((buffer->entry[temp_index]).size);
+			if(temp >= temp2)
+			{
+				*(entry_offset_byte_rtn) = temp2; /*(((buffer->entry[temp_index]).buffptr)[temp2]);*/
+				return &(buffer->entry[temp_index]);
+			}
+			else
+			{
+				temp_index = ((temp_index +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+				temp2 -= temp;
+			}
+			
+		}
+	}
+	
+	syslog(LOG_DEBUG, "***********************************\n");
+	/* In case of error */
     return NULL;
 }
 
@@ -43,10 +94,24 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 * Any memory referenced in @param add_entry must be allocated by and/or must have a lifetime managed by the caller.
 */
 void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
-{
-    /**
-    * TODO: implement per description 
-    */
+{  
+    /* Buffer full condition */
+    if(buffer->full)
+    {
+    	buffer->out_offs = ((buffer->out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+    	buffer->full = false;
+    }
+    
+    /* Store pointer and size in the circular buffer */
+    (buffer->entry[buffer->in_offs]).buffptr = add_entry->buffptr;
+    (buffer->entry[buffer->in_offs]).size = add_entry->size;
+    
+    /*Check if buffer is full */
+    buffer->in_offs = ((buffer->in_offs+1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+    if(buffer->in_offs == buffer->out_offs)
+    {
+    	buffer->full = true;
+    }
 }
 
 /**
