@@ -187,6 +187,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 {
 	 	// Error in obtaining the mutex. Probably got interrupted
 	 	PDEBUG("mutex_lock_interruptible() interrupted\n\r");
+	 	return -ERESTARTSYS;
 	 }
 	 
 	 PDEBUG("Locked mutex"); 
@@ -196,6 +197,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 {
 	 	/* malloc temp buffer */
 		 (dev->temp_write_buffer).buffptr = (char *)kmalloc(count, GFP_KERNEL); 
+		 
 		 if((dev->temp_write_buffer).buffptr == NULL)
 		 {
  		 	PDEBUG("Error in kmalloc for temp_write_buffer in aesd_write()\n\r");
@@ -208,6 +210,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 {
 	 	/* realloc temp buffer */
 	 	(dev->temp_write_buffer).buffptr = krealloc((dev->temp_write_buffer).buffptr, (sizeof(char) *(count + (dev->temp_write_buffer).size)), GFP_KERNEL);
+	 	
 		 if(dev->temp_write_buffer.buffptr == NULL)
 		 {
  		 	PDEBUG("Error in krealloc for temp_write_buffer in aesd_write()\n\r");
@@ -220,13 +223,13 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 
 	 size_t bytes_write = 0;
 	 /* copy from user into global write buffer and check for \n*/
-	 bytes_write = copy_from_user((void *)((dev->temp_write_buffer).buffptr + (dev->temp_write_buffer).size), buf, count);
+	 bytes_write = copy_from_user((void *)(dev->temp_write_buffer.buffptr + dev->temp_write_buffer.size), buf, count);
 	 
 	 retval = count-bytes_write;
 	 (dev->temp_write_buffer).size += retval;
-	 PDEBUG("copy_from_user bytes: %zu", bytes_write);
+	 PDEBUG("copy_from_user bytes: %zu", retval);
 	 
-	 int i;
+	 /*int i;
 	 for(i = 0; i< dev->temp_write_buffer.size; i++)
 	 {
 	 	if((dev->temp_write_buffer).buffptr[i] == '\n')
@@ -244,10 +247,24 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 	temp = aesd_circular_buffer_add_entry(&(dev->circ_buff), &(dev->temp_write_buffer));
 	 	if(temp != NULL)
 	 	{
-	 		/* Incase the buffer is overwriting an entry. Free the memory allocated to the entry previously */
+	 		// Incase the buffer is overwriting an entry. Free the memory allocated to the entry previously 
 	 		//temp->size =0;
 	 		kfree(temp);
 	 	}
+	 	PDEBUG("Write to circular buffer");
+	 	dev->temp_write_buffer.size =0;
+	 	dev->temp_write_buffer.buffptr = NULL;
+	 }*/
+	 
+	 if(memchr(dev->temp_write_buffer.buffptr, '\n', dev->temp_write_buffer.size)
+	 {
+	 	char *temp = NULL;
+	 	temp = aesd_circular_buffer_add_entry(&dev->circ_buff, &dev->temp_write_buffer);
+	 	if(temp == NULL)
+	 	{
+	 		kfree(temp);
+	 	}
+	 	
 	 	PDEBUG("Write to circular buffer");
 	 	dev->temp_write_buffer.size =0;
 	 	dev->temp_write_buffer.buffptr = NULL;
