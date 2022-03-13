@@ -192,7 +192,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 PDEBUG("Locked mutex"); 
 	 
 	 
-	 if(dev->temp_write_buffer.size) //size in entry is 0
+	 if(dev->temp_write_buffer.size == 0) //size in entry is 0
 	 {
 	 	/* malloc temp buffer */
 		 (dev->temp_write_buffer).buffptr = (char *)kmalloc(count, GFP_KERNEL); 
