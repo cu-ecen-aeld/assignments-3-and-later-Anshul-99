@@ -270,7 +270,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 	int i;
 	 	for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 	{
-	 		PDEBUG("circular buffer content %d %s", i, dev->circ_buff[i].buffptr);
+	 		PDEBUG("circular buffer content %d %s", i, dev->circ_buff.entry[i].buffptr);
 	 	}
 	 	dev->temp_write_buffer.size =0;
 	 	dev->temp_write_buffer.buffptr = NULL;
