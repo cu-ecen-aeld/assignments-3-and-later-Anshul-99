@@ -201,8 +201,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  		 	PDEBUG("Error in kmalloc for temp_write_buffer in aesd_write()\n\r");
 	 		goto exit_error;
 		 }
-		 dev->temp_write_buffer.size = count;
-		 PDEBUG("Malloced temp_write_buffer bytes: %zu", dev->temp_write_buffer.size);
+		 //dev->temp_write_buffer.size = count;
+		 PDEBUG("Malloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
 	 }
 	 else 
 	 {
@@ -213,15 +213,17 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  		 	PDEBUG("Error in krealloc for temp_write_buffer in aesd_write()\n\r");
 	 		goto exit_error;
 		 }
-		 dev->temp_write_buffer.size += count;
-		 PDEBUG("Realloced temp_write_buffer bytes: %zu", dev->temp_write_buffer.size);
+		 //dev->temp_write_buffer.size += count;
+		 PDEBUG("Realloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
 	 }
 	 
 	 
 	 size_t bytes_write = 0;
 	 /* copy from user into global write buffer and check for \n*/
 	 bytes_write = copy_from_user((void *)((dev->temp_write_buffer).buffptr + (dev->temp_write_buffer).size), buf, count);
-	 (dev->temp_write_buffer).size = bytes_write;
+	 
+	 retval = count-bytes_write;
+	 (dev->temp_write_buffer).size += retval;
 	 PDEBUG("copy_from_user bytes: %zu", bytes_write);
 	 
 	 int i;
@@ -247,16 +249,18 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		kfree(temp);
 	 	}
 	 	PDEBUG("Write to circular buffer");
+	 	dev->temp_write_buffer.size =0;
+	 	dev->temp_write_buffer.buffptr = NULL;
 	 }
 	 
-	 retval = (dev->temp_write_buffer).size - count;
+	 //retval = (dev->temp_write_buffer).size - count;
 	
  exit_error:
 	 /* release mutex */
 	 mutex_unlock(&(dev->lock_circular_buffer));
 	 PDEBUG("Released mutex");
 	 
-	 PDEBUG("Return value %zu", retval);
+	 PDEBUG("Return value %d", retval);
 	 
 	return retval;
 }
