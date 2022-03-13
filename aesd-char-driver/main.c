@@ -189,6 +189,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 	PDEBUG("mutex_lock_interruptible() interrupted\n\r");
 	 }
 	 
+	 PDEBUG("Locked mutex"); 
+	 
 	 
 	 if(dev->temp_write_buffer.size) //size in entry is 0
 	 {
@@ -199,6 +201,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  		 	PDEBUG("Error in kmalloc for temp_write_buffer in aesd_write()\n\r");
 	 		goto exit_error;
 		 }
+		 dev->temp_write_buffer.size = count;
+		 PDEBUG("Malloced temp_write_buffer bytes: %zu", dev->temp_write_buffer.size);
 	 }
 	 else 
 	 {
@@ -209,6 +213,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  		 	PDEBUG("Error in krealloc for temp_write_buffer in aesd_write()\n\r");
 	 		goto exit_error;
 		 }
+		 dev->temp_write_buffer.size += count;
+		 PDEBUG("Realloced temp_write_buffer bytes: %zu", dev->temp_write_buffer.size);
 	 }
 	 
 	 
@@ -216,7 +222,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 /* copy from user into global write buffer and check for \n*/
 	 bytes_write = copy_from_user((void *)((dev->temp_write_buffer).buffptr + (dev->temp_write_buffer).size), buf, count);
 	 (dev->temp_write_buffer).size = bytes_write;
-	 
+	 PDEBUG("copy_from_user bytes: %zu", bytes_write);
 	 
 	 int i;
 	 for(i = 0; i< dev->temp_write_buffer.size; i++)
@@ -227,6 +233,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		break;
 	 	}
 	 }
+	 PDEBUG("Check for \ n");
 	 
 	 if(dev->string_complete_flag)
 	 {
@@ -239,6 +246,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		//temp->size =0;
 	 		kfree(temp);
 	 	}
+	 	PDEBUG("Write to circular buffer");
 	 }
 	 
 	 retval = (dev->temp_write_buffer).size - count;
@@ -246,6 +254,9 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  exit_error:
 	 /* release mutex */
 	 mutex_unlock(&(dev->lock_circular_buffer));
+	 PDEBUG("Released mutex");
+	 
+	 PDEBUG("Return value %zu", retval);
 	 
 	return retval;
 }
