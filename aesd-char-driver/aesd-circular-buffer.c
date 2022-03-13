@@ -15,7 +15,7 @@
 #endif
 
 #include "aesd-circular-buffer.h"
-#include "syslog.h"
+//#include "syslog.h"
 
 /**
  * @param buffer the buffer to search for corresponding offset.  Any necessary locking must be performed by caller.
@@ -37,13 +37,14 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 	
 	if(buffer->full)
 	{
-		for(int i = 0; i<AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
+		int i;
+		for(i = 0; i<AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 		{
 			temp =  ((buffer->entry[temp_index]).size);
 			
 			if(temp > temp2)
 			{
-				syslog(LOG_DEBUG, "Temp_: %ld\n", temp);
+				//syslog(LOG_DEBUG, "Temp_: %ld\n", temp);
 				*(entry_offset_byte_rtn) = temp2;
 				return &(buffer->entry[temp_index]);
 			}
@@ -81,7 +82,7 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 		}
 	}
 	
-	syslog(LOG_DEBUG, "***********************************\n");
+	//syslog(LOG_DEBUG, "***********************************\n");
 	/* In case of error */
     return NULL;
 }
@@ -93,14 +94,17 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 * Any necessary locking must be handled by the caller
 * Any memory referenced in @param add_entry must be allocated by and/or must have a lifetime managed by the caller.
 */
-void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
+void *aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
 {  
     /* Buffer full condition */
     if(buffer->full)
     {
     	buffer->out_offs = ((buffer->out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
-    	buffer->full = false;
+    	buffer->full = false; //TODO
     }
+    
+    char *temp = NULL;
+    temp = (buffer->entry[buffer->in_offs]).buffptr;
     
     /* Store pointer and size in the circular buffer */
     (buffer->entry[buffer->in_offs]).buffptr = add_entry->buffptr;
@@ -112,6 +116,7 @@ void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const s
     {
     	buffer->full = true;
     }
+    return temp;
 }
 
 /**
