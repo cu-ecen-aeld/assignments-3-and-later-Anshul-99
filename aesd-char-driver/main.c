@@ -64,6 +64,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 {
 	 	// Error in obtaining the mutex. Probably got interrupted
 	 	PDEBUG("mutex_lock_interruptible() interrupted\n\r");
+	 	return -ERESTARTSYS;
 	 }
 	 
 	 /*check count and malloc memory for it */
@@ -146,7 +147,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 	}
 	 }
 	 
-	 *f_pos = final_char_offset;
+	 *f_pos += bytes_copied;
 	 
 	 
 	 /* Copy data from temp buffer to the user space */
