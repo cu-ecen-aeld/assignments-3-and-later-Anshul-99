@@ -265,7 +265,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		kfree(temp);
 	 	}
 	 	
-	 	PDEBUG("Write to circular buffer");
+	 	PDEBUG("Write to circular buffer %s", dev->temp_write_buffer.buffptr);
 	 	dev->temp_write_buffer.size =0;
 	 	dev->temp_write_buffer.buffptr = NULL;
 	 }
