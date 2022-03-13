@@ -66,6 +66,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 	PDEBUG("mutex_lock_interruptible() interrupted\n\r");
 	 	return -ERESTARTSYS;
 	 }
+	 PDEBUG("aesd_read: Locked mutex"); 
 	 
 	 /*check count and malloc memory for it */
 	 char *temp_buffer = (char *)kmalloc(count, GFP_KERNEL); 
@@ -75,6 +76,8 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 	goto exit_error;
 	 }
 	 uint32_t temp_buffer_index =0; /* index for temp_buffer */
+	 
+	 PDEBUG("aesd_read: Allocated temp buffer"); 
 	 
 	 /* Copy that amount of data from the circular buffer and store it in the temp buffer */
 	 
@@ -90,6 +93,8 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 	PDEBUG("Error in aesd_circular_buffer_find_entry_offset_for_fpos() in aesd_read()\n\r");
 	 	goto exit_error;
 	 }
+	 
+	 PDEBUG("aesd_read: Calculated fpos"); 
 	 	 
 	 	 
  	 //TODO: Check return values. Partial read, End of File, error return values should be possible 
@@ -146,6 +151,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 		dev->char_offset = 0;
 	 	}
 	 }
+	 PDEBUG("aesd_read: Read string"); 
 	 
 	 *f_pos += bytes_copied;
 	 
@@ -160,6 +166,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 /* Free temp_buffer */
 	 kfree(temp_buffer);
+	 PDEBUG("aesd_read: Free temp_buffer"); 
 	 
 	 /* return the number of bytes copied */
 	retval = bytes_copied;
@@ -167,6 +174,9 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
  exit_error:
 	 /* release mutex */
 	 mutex_unlock(&(dev->lock_circular_buffer));
+ 	 PDEBUG("aesd_read: Released mutex");
+	 
+	 PDEBUG("aesd_read: Return value %d", retval);
 	
 	 
 	return retval;
@@ -187,11 +197,11 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 if(ret_val != 0)
 	 {
 	 	// Error in obtaining the mutex. Probably got interrupted
-	 	PDEBUG("mutex_lock_interruptible() interrupted\n\r");
+	 	PDEBUG("aesd_write: mutex_lock_interruptible() interrupted\n\r");
 	 	return -ERESTARTSYS;
 	 }
 	 
-	 PDEBUG("Locked mutex"); 
+	 PDEBUG("aesd_write: Locked mutex"); 
 	 
 	 
 	 if(dev->temp_write_buffer.size == 0) //size in entry is 0
@@ -205,7 +215,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		goto exit_error;
 		 }
 		 //dev->temp_write_buffer.size = count;
-		 PDEBUG("Malloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
+		 PDEBUG("aesd_write: Malloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
 	 }
 	 else 
 	 {
@@ -218,7 +228,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		goto exit_error;
 		 }
 		 //dev->temp_write_buffer.size += count;
-		 PDEBUG("Realloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
+		 PDEBUG("aesd_write: Realloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
 	 }
 	 
 	 
@@ -228,7 +238,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 
 	 retval = count-bytes_write;
 	 (dev->temp_write_buffer).size += retval;
-	 PDEBUG("copy_from_user bytes: %zu", retval);
+	 PDEBUG("aesd_write: copy_from_user bytes: %zu", retval);
 	 
 	 /*int i;
 	 for(i = 0; i< dev->temp_write_buffer.size; i++)
@@ -266,12 +276,12 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		kfree(temp);
 	 	}
 	 	
-	 	PDEBUG("Write to circular buffer %s", dev->temp_write_buffer.buffptr);
+	 	PDEBUG("aesd_write: Write to circular buffer %s", dev->temp_write_buffer.buffptr);
 	 	
 	 	int i;
 	 	for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 	{
-	 		PDEBUG("circular buffer content %d %s", i, dev->circ_buff.entry[i].buffptr);
+	 		PDEBUG("aesd_write: circular buffer content %d %s", i, dev->circ_buff.entry[i].buffptr);
 	 	}
 	 	dev->temp_write_buffer.size =0;
 	 	dev->temp_write_buffer.buffptr = NULL;
@@ -282,9 +292,9 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
  exit_error:
 	 /* release mutex */
 	 mutex_unlock(&(dev->lock_circular_buffer));
-	 PDEBUG("Released mutex");
+	 PDEBUG("aesd_write: Released mutex");
 	 
-	 PDEBUG("Return value %d", retval);
+	 PDEBUG("aesd_write: Return value %d", retval);
 	 
 	return retval;
 }
