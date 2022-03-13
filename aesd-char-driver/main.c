@@ -151,18 +151,21 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 		dev->char_offset = 0;
 	 	}
 	 }
-	 PDEBUG("aesd_read: Read string"); 
+	 PDEBUG("aesd_read: Read string bytes: %d", bytes_copied); 
+	 PDEBUG("aesd_read: Read string string: %s", temp_buffer); 
 	 
 	 *f_pos += bytes_copied;
 	 
 	 
 	 /* Copy data from temp buffer to the user space */
 	 ret_val = copy_to_user(buf, temp_buffer, bytes_copied);
-	 if(ret_val < bytes_copied)
+	 if(ret_val != 0)
 	 {
 	 	PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
 	 	goto exit_error;
 	 }
+	 
+	 PDEBUG("aesd_read: copy to user"); 
 	 
 	 /* Free temp_buffer */
 	 kfree(temp_buffer);
