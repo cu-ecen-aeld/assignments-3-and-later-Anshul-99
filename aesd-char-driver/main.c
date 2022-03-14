@@ -87,7 +87,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 size_t final_f_pos;
 	 //dev->char_offset = *f_pos;
 	 
-	 end_value = aesd_circular_buffer_find_entry_offset_for_fpos(&(dev->circ_buff), (*f_pos), &final_char_offset);
+	 end_value = aesd_circular_buffer_find_entry_offset_for_fpos(&(dev->circ_buff), (*f_pos), &final_f_pos);
 	 if(end_value == NULL)
 	 {
 	 	PDEBUG("Error in aesd_circular_buffer_find_entry_offset_for_fpos() in aesd_read()\n\r");
