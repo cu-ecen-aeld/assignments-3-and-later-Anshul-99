@@ -96,7 +96,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 PDEBUG("aesd_read: Calculated fpos"); 
 	 	 
-	 
+	 uint32_t bytes_copied = 0;
 	 /*int i;
 	 for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 {
@@ -154,15 +154,27 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 *f_pos += bytes_copied;*/
 	 
-	 uint32_t bytes_copied = (dev->circ_buff.entry[dev->circ_buff.out_offs].size - (*f_pos));
+	 int i;
+	 for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
+	 {
+	 	if((bytes_copied == count) && ((*f_pos) == final_f_pos) && (end_value == &dev->circ_buff.entry[dev->circ_buff.out_offs]))
+	 	{
+	 		break;
+	 	}
+	 	else
+	 	{
+			bytes_copied += (dev->circ_buff.entry[dev->circ_buff.out_offs].size - (*f_pos));
+
+			char *temp_ptr = (dev->circ_buff.entry[dev->circ_buff.out_offs].buffptr + (*f_pos));
+			PDEBUG("aesd_read: Current entry %p ", &dev->circ_buff.entry[dev->circ_buff.out_offs]);
+
+			(dev->circ_buff).out_offs = (((dev->circ_buff).out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+			(*f_pos) += bytes_copied;
+			PDEBUG("aesd_read: updated out_offs %p and f_pos f_pos: %d", end_value, *f_pos);	 		
+	 	}
+	 }
 	 
-	 char *temp_ptr = (dev->circ_buff.entry[dev->circ_buff.out_offs].buffptr + (*f_pos));
-	 PDEBUG("aesd_read: Current entry %p ", &dev->circ_buff.entry[dev->circ_buff.out_offs]);
-	 
- 	 (dev->circ_buff).out_offs = (((dev->circ_buff).out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
-	 (*f_pos) += bytes_copied;
-	 PDEBUG("aesd_read: updated out_offs %p and f_pos f_pos: %d", end_value, *f_pos);
-	 
+
 
 	 /* Copy data from temp buffer to the user space */
 	 ret_val = copy_to_user(buf, temp_ptr, bytes_copied);
