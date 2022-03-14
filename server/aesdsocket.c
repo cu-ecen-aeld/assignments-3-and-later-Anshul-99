@@ -18,8 +18,16 @@
 
 
 #define SERVICE_PORT "9000"
-#define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
 #define BYTES 128
+
+#define USE_AESD_CHAR_DEVICE 1
+
+#if(USE_AESD_CHAR_DEVICE == 1)
+#define PATH_TO_FILE "/dev/aesdchar"
+#else if(USE_AESD_CHAR_DEVICE == 0)
+#define PATH_TO_FILE "/var/tmp/aesdsocketdata.txt"
+#endif
+
 
 SLIST_HEAD(slisthead, thread_info) head;
 
@@ -85,6 +93,8 @@ static void sig_handler (int signo)
 		z =0;
 	}
 }
+
+#if(USE_AESD_CHAR_DEVICE != 1)
 
 void alarm_handler(int signum)
 {
@@ -165,6 +175,7 @@ void alarm_handler(int signum)
 	pthread_mutex_unlock (&mutex_aesdsocketdata_file);
 	return;
 }
+#endif
 
 int setup_comm()
 {
@@ -608,6 +619,8 @@ int main(int argc , char** argv)
 		num_threads++;
 		syslog(LOG_DEBUG, "thread allocated %ld\n", ptr->thread_id);
 		
+#if(USE_AESD_CHAR_DEVICE != 1)
+	
 		struct itimerval delay;
 	
 		delay.it_value.tv_sec = 10;
@@ -621,6 +634,8 @@ int main(int argc , char** argv)
 			syslog(LOG_ERR, "setitimer() returned error. The error was %s\n", strerror(errnum));
 			printf("Error: setitimer() returned error %d\n\r", errnum);
 		}
+		
+#endif
 
 /******************************************************
 
