@@ -600,13 +600,11 @@ int main(int argc , char** argv)
 ******************************************************/
 
 		thread_info_t *ptr = (thread_info_t *)malloc(sizeof(thread_info_t));
-
-		pthread_create(&(ptr->thread_id), NULL, thread_func, ptr);
-		
 		SLIST_INSERT_HEAD(&head, ptr, entries);
 		ptr->terminate_thread_flag = 0;
 		//TODO: Enter connection parameter from socket
 		ptr->sockfd_connected = socket_fd_connected;
+		pthread_create(&(ptr->thread_id), NULL, thread_func, ptr);
 		num_threads++;
 		syslog(LOG_DEBUG, "thread allocated %ld\n", ptr->thread_id);
 		

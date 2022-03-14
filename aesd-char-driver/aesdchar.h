@@ -27,9 +27,6 @@
 
 struct aesd_dev
 {
-	/**
-	 * TODO: Add structure(s) and locks needed to complete assignment requirements
-	 */
 	 
 	/* Struct contains the circular buffer and related flags that will be used 
 	by the device driver */ 
@@ -46,7 +43,6 @@ struct aesd_dev
 	
 	
 	/*Locking mechanism for the accessing the circular buffer via the driver */
-	//TODO: spinlock or mutex?
 	/* This mutex locks access to circular buffer for read/write operations */
 	struct mutex lock_circular_buffer;
 	//DECLARE_MUTEX(lock_circular_buffer); 
