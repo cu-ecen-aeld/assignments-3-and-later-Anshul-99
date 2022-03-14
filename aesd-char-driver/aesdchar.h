@@ -46,6 +46,8 @@ struct aesd_dev
 	/* This mutex locks access to circular buffer for read/write operations */
 	struct mutex lock_circular_buffer;
 	//DECLARE_MUTEX(lock_circular_buffer); 
+	
+	int malloc_cntr;
 
 
 	/* Char device structure		*/
