@@ -170,20 +170,22 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 
 			(dev->circ_buff).out_offs = (((dev->circ_buff).out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
 			(*f_pos) += bytes_copied;
-			PDEBUG("aesd_read: updated out_offs %p and f_pos f_pos: %d", end_value, *f_pos);	 		
+			PDEBUG("aesd_read: updated out_offs %p and f_pos f_pos: %d", end_value, *f_pos);
+			
+			/* Copy data from temp buffer to the user space */
+			ret_val = copy_to_user(buf, temp_ptr, bytes_copied);
+			if(ret_val != 0)
+			{
+				PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
+				goto exit_error;
+			}
+			PDEBUG("aesd_read: copy to user bytes: %d", bytes_copied); 	 		
 	 	}
 	 }
 	 
 
 
-	 /* Copy data from temp buffer to the user space */
-	 ret_val = copy_to_user(buf, temp_ptr, bytes_copied);
-	 if(ret_val != 0)
-	 {
-	 	PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
-	 	goto exit_error;
-	 }
-	 PDEBUG("aesd_read: copy to user bytes: %d", bytes_copied); 
+
 	 
 	 /* Free temp_buffer */
 	 //kfree(temp_buffer);
