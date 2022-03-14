@@ -96,7 +96,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 PDEBUG("aesd_read: Calculated fpos"); 
 	 	 
-	 uint32_t bytes_copied = 0;
+	 size_t bytes_copied = 0;
 	 /*int i;
 	 for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 {
@@ -154,7 +154,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 *f_pos += bytes_copied;*/
 	 
-	 int i;
+	 /*int i;
 	 for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 {
 	 	if((bytes_copied == count) && ((*f_pos) == final_f_pos) && (end_value == &dev->circ_buff.entry[dev->circ_buff.out_offs]))
@@ -163,6 +163,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 	}
 	 	else
 	 	{
+			size_t bytes_copied_temp = (dev->circ_buff.entry[dev->circ_buff.out_offs].size - (*f_pos));
 			bytes_copied += (dev->circ_buff.entry[dev->circ_buff.out_offs].size - (*f_pos));
 
 			char *temp_ptr = (dev->circ_buff.entry[dev->circ_buff.out_offs].buffptr + (*f_pos));
@@ -172,19 +173,26 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 			(*f_pos) += bytes_copied;
 			PDEBUG("aesd_read: updated out_offs %p and f_pos f_pos: %d", end_value, *f_pos);
 			
-			/* Copy data from temp buffer to the user space */
-			ret_val = copy_to_user(buf, temp_ptr, bytes_copied);
-			if(ret_val != 0)
-			{
-				PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
-				goto exit_error;
-			}
-			PDEBUG("aesd_read: copy to user bytes: %d", bytes_copied); 	 		
+	 		
 	 	}
+	 }*/
+	 
+	 if( count> (end_value->size - final_f_pos))
+	 {
+	 	count = end_value->size - final_f_pos;
 	 }
 	 
+	 
+	 
 
-
+	/* Copy data from temp buffer to the user space */
+	bytes_copied = copy_to_user(buf, (end_value->buffptr + final_f_pos), count);
+	if(bytes_copied != 0)
+	{
+		PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
+		goto exit_error;
+	}
+	PDEBUG("aesd_read: copy to user bytes: %d", bytes_copied); 
 
 	 
 	 /* Free temp_buffer */
@@ -192,7 +200,8 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 //PDEBUG("aesd_read: Free temp_buffer"); 
 	 
 	 /* return the number of bytes copied */
-	retval = bytes_copied;
+	retval = count - bytes_copied;
+	(*f_pos) += retval;
 	
  exit_error:
 	 /* release mutex */
