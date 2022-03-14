@@ -78,25 +78,25 @@ echo "The output should show writes 2-11 in order"
 cat ${read_file}
 check_output ${read_file} ${expected_file_2_to_11}
 
-#echo -n "w" > ${device}
-#echo -n "r" > ${device}
-#echo -n "it" > ${device}
-#echo "e1"  > ${device}
-#echo "write2" > ${device}
-#echo "write3" > ${device}
-#echo "write4" > ${device}
-#echo "write5" > ${device}
-#echo "write6" > ${device}
-#echo "write7" > ${device}
-#echo "write8" > ${device}
-#echo "write9" > ${device}
-#echo -n "wr" > ${device}
-#echo -n "it" > ${device}
-#echo "e10" > ${device}
+echo -n "w" > ${device}
+echo -n "r" > ${device}
+echo -n "it" > ${device}
+echo "e1"  > ${device}
+echo "write2" > ${device}
+echo "write3" > ${device}
+echo "write4" > ${device}
+echo "write5" > ${device}
+echo "write6" > ${device}
+echo "write7" > ${device}
+echo "write8" > ${device}
+echo "write9" > ${device}
+echo -n "wr" > ${device}
+echo -n "it" > ${device}
+echo "e10" > ${device}
 
-#echo "The output should show writes 1-10 in order, with write1 and write10 on a single line"
-#cat ${device} > ${read_file}
-#cat ${read_file}
-#check_output ${read_file} ${expected_file}
+echo "The output should show writes 1-10 in order, with write1 and write10 on a single line"
+cat ${device} > ${read_file}
+cat ${read_file}
+check_output ${read_file} ${expected_file}
 
 exit ${rc}
