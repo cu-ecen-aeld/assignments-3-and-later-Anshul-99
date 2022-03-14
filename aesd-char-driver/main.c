@@ -213,6 +213,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	******************************************************/	 
 	 if(dev->temp_write_buffer.size == 0) //size in entry is 0
 	 {
+	 	//TODO: Memory leaks here
 	 	/* malloc temp buffer */
 		 (dev->temp_write_buffer).buffptr = (char *)kmalloc(count, GFP_KERNEL); 
 		 
@@ -222,7 +223,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		goto exit_error;
 		 }
 		 //dev->temp_write_buffer.size = count;
-		 PDEBUG("aesd_write: Malloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
+		 PDEBUG("aesd_write: Malloced temp_write_buffer bytes: %d", count/*, dev->temp_write_buffer.size*/);
 	 }
 	 else 
 	 {
@@ -235,7 +236,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 		goto exit_error;
 		 }
 		 //dev->temp_write_buffer.size += count;
-		 PDEBUG("aesd_write: Realloced temp_write_buffer"/*, dev->temp_write_buffer.size*/);
+		 PDEBUG("aesd_write: Realloced temp_write_buffer total size: %d", (count + (dev->temp_write_buffer).size)/*, dev->temp_write_buffer.size*/);
 	 }
 	 
 	 
