@@ -69,23 +69,23 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 PDEBUG("aesd_read: Locked mutex"); 
 	 
 	 /*check count and malloc memory for it */
-	 char *temp_buffer = (char *)kmalloc(count, GFP_KERNEL); 
+	 /*char *temp_buffer = (char *)kmalloc(count, GFP_KERNEL); 
 	 if(temp_buffer == NULL)
 	 {
 	 	PDEBUG("Error in kmalloc for temp_buffer in aesd_read()\n\r");
 	 	goto exit_error;
 	 }
-	 uint32_t temp_buffer_index =0; /* index for temp_buffer */
+	 uint32_t temp_buffer_index =0;*/ /* index for temp_buffer */
 	 
-	 PDEBUG("aesd_read: Allocated temp buffer"); 
+	 //PDEBUG("aesd_read: Allocated temp buffer"); 
 	 
 	 /* Copy that amount of data from the circular buffer and store it in the temp buffer */
 	 
 	 /* temporary variable that points to the circular buffer entry element containing the last character to be copied */
 	 struct aesd_buffer_entry *end_value = NULL; 
 	 /* Stores the offset inside the string for the last circular buffer entry element */
-	 size_t final_char_offset;
-	 dev->char_offset = *f_pos;
+	 size_t final_f_pos;
+	 //dev->char_offset = *f_pos;
 	 
 	 end_value = aesd_circular_buffer_find_entry_offset_for_fpos(&(dev->circ_buff), (*f_pos), &final_char_offset);
 	 if(end_value == NULL)
@@ -96,20 +96,18 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 
 	 PDEBUG("aesd_read: Calculated fpos"); 
 	 	 
-	 	 
- 	 //TODO: Check return values. Partial read, End of File, error return values should be possible 
-	 uint32_t bytes_copied = 0;
-	 int i;
+	 uint32_t bytes_copied = (dev->circ_buff.entry[dev->circ_buff.out_offs].size - (*f_pos));
+	 /*int i;
 	 for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
 	 {
-	 	/* pointer to element in circular buffer where the read index(out_offs) is */
+	 	// pointer to element in circular buffer where the read index(out_offs) is 
 		 struct aesd_buffer_entry *start_value = &((dev->circ_buff).entry[(dev->circ_buff).out_offs]);
 	 	if((start_value) == (end_value))
 	 	{
 	 		//copy only upto final_char_offset
 	 		
-	 		/* then only a subset of the string is copied from the element and 
-	 		it's possible that some characters might not be read from the element string */
+	 		// then only a subset of the string is copied from the element and 
+	 		it's possible that some characters might not be read from the element string 
 	 		uint32_t j;
 	 		if(i ==0) 
 	 		{
@@ -121,7 +119,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 		 		}
 		 		break;
 	 		}
-	 		/* Entire remaining string subset is to be copied from the element */
+	 		// Entire remaining string subset is to be copied from the element 
 	 		else
 	 		{
 	 			for(j = 0; j<final_char_offset; j++)
@@ -154,22 +152,27 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	 PDEBUG("aesd_read: Read string bytes: %d", bytes_copied); 
 	 PDEBUG("aesd_read: Read string string: %s", temp_buffer); 
 	 
-	 *f_pos += bytes_copied;
+	 *f_pos += bytes_copied;*/
 	 
+	 char *temp_ptr = (dev->circ_buff.entry[dev->circ_buff.out_offs].buffptr + (*f_pos));
 	 
+ 	 (dev->circ_buff).out_offs = (((dev->circ_buff).out_offs +1)%(AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED));
+	 (*f_pos) += bytes_copied;
+	 PDEBUG("aesd_read: updated out_offs and f_pos f_pos: %d", *f_pos);
+	 
+
 	 /* Copy data from temp buffer to the user space */
-	 ret_val = copy_to_user(buf, temp_buffer, bytes_copied);
+	 ret_val = copy_to_user(buf, temp_ptr, bytes_copied);
 	 if(ret_val != 0)
 	 {
 	 	PDEBUG("Error in copy_to_user() in aesd_read()\n\r");
 	 	goto exit_error;
 	 }
-	 
-	 PDEBUG("aesd_read: copy to user"); 
+	 PDEBUG("aesd_read: copy to user bytes: %d", bytes_copied); 
 	 
 	 /* Free temp_buffer */
-	 kfree(temp_buffer);
-	 PDEBUG("aesd_read: Free temp_buffer"); 
+	 //kfree(temp_buffer);
+	 //PDEBUG("aesd_read: Free temp_buffer"); 
 	 
 	 /* return the number of bytes copied */
 	retval = bytes_copied;
