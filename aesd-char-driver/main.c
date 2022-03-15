@@ -252,7 +252,35 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 (dev->temp_write_buffer).size += retval;
 	 PDEBUG("aesd_write: copy_from_user bytes: %zu", retval);
 	 
-	 if(memchr(dev->temp_write_buffer.buffptr, '\n', dev->temp_write_buffer.size))
+	 int i = 0;
+	 for(i = 0; i< dev->temp_write_buffer.size; i++)
+	 {
+ 		 if(dev->temp_write_buffer.buffptr[i] == '\n')
+		 {
+		 	char *temp = NULL;
+		 	temp = aesd_circular_buffer_add_entry(&dev->circ_buff, &dev->temp_write_buffer);
+		 	if(temp != NULL)
+		 	{
+		 		kfree(temp);
+		 		dev->malloc_cntr -= 1;
+		 	}
+		 	
+		 	PDEBUG("aesd_write: Write to circular buffer %s", dev->temp_write_buffer.buffptr);
+		 	
+		 	int i;
+		 	for(i =0; i< AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED; i++)
+		 	{
+		 		PDEBUG("aesd_write: circular buffer content %d %s", i, dev->circ_buff.entry[i].buffptr);
+		 	}
+		 	dev->temp_write_buffer.size =0;
+		 	dev->temp_write_buffer.buffptr = NULL;
+		 	PDEBUG("aesd_write: malloc_cntr %d", dev->malloc_cntr);
+		 	break;
+		 }
+	 }
+	 //andjabvkd
+	 
+	 /*if(memchr(dev->temp_write_buffer.buffptr, '\n', dev->temp_write_buffer.size))
 	 {
 	 	char *temp = NULL;
 	 	temp = aesd_circular_buffer_add_entry(&dev->circ_buff, &dev->temp_write_buffer);
@@ -272,7 +300,9 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	 	dev->temp_write_buffer.size =0;
 	 	dev->temp_write_buffer.buffptr = NULL;
 	 	PDEBUG("aesd_write: malloc_cntr %d", dev->malloc_cntr);
-	 }
+	 }*/
+	 
+
 	 
  	 /******************************************************
 	 
