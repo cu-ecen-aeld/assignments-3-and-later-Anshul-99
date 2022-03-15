@@ -213,7 +213,6 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	******************************************************/	 
 	 if(dev->temp_write_buffer.size == 0) //size in entry is 0
 	 {
-	 	//TODO: Memory leaks here
 	 	/* malloc temp buffer */
 		 (dev->temp_write_buffer).buffptr = (char *)kmalloc(count, GFP_KERNEL); 
 		 dev->malloc_cntr += 1;
@@ -334,8 +333,6 @@ int aesd_init_module(void)
 	aesd_device.circ_buff.out_offs =0;
 	aesd_device.circ_buff.full = false;
 	
-	aesd_device.string_complete_flag =0;
-	aesd_device.char_offset =0;
 	aesd_device.malloc_cntr = 0;
 	
 	// Initialize the locking mechanism
