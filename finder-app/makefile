@@ -1,20 +1,12 @@
 # Author: Anshul Somani
 # This makefile builds an executable for writer.c for two different targets, native and aarch64-none-linux-gnu.
-
-#writer: writer.c
-	#gcc -Wall -Werror -o writer writer.c 
-
-#clean:
-	#rm -f writer
 	
-#CROSS_COMPILE:
-	#aarch64-none-linux-gnu-gcc -g -Wall -c -o writer.o writer.c
-
-	
-CROSS_COMPILE = 
+CROSS_COMPILE = aarch64-none-linux-gnu-
 CC = $(CROSS_COMPILE)gcc
 
 CFLAGS = -g -Wall -Werror
+
+all: writer
 
 default: writer
 
@@ -26,5 +18,5 @@ writer.o: writer.c
 	
 clean: 
 	rm -f writer writer.o
-
+	
 .PHONY: clean
