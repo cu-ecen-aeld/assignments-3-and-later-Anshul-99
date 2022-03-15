@@ -8,8 +8,10 @@ set -u
 NUMFILES=10
 WRITESTR=AELD_IS_FUN
 WRITEDIR=/tmp/aeld-data
-username=$(cat conf/username.txt)
+username=$(cat /etc/finder-app/conf/username.txt)
 
+#/etc/finder-app/conf/username.txt
+#conf/username.txt
 if [ $# -lt 2 ]
 then
 	echo "Using default value ${WRITESTR} for string to write"
@@ -23,6 +25,15 @@ else
 	NUMFILES=$1
 	WRITESTR=$2
 fi
+
+#FILE1=finder
+#FILE2=writer
+#which $FILE1 #$FILE2
+#echo $?
+#if [ $? -ne 0 ];
+#then
+#	echo "ERROR: $?" 
+#fi
 
 MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines are ${NUMFILES}"
 
@@ -41,19 +52,21 @@ else
 	exit 1
 fi
 
-#echo "Removing the old writer utility and compiling as a native application"
-#make clean
-#make
+echo "Removing the old writer utility and compiling as a native application"
 
 for i in $( seq 1 $NUMFILES)
 do
-	./writer.sh "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+	writer "$WRITEDIR/${username}$i.txt" "$WRITESTR"
 done
 
-OUTPUTSTRING=$(./finder.sh "$WRITEDIR" "$WRITESTR")
+
+OUTPUTSTRING=$(finder.sh "$WRITEDIR" "$WRITESTR")
+writer "/tmp/assignment-4-result.txt" "$OUTPUTSTRING"
+
 
 set +e
 echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
+
 if [ $? -eq 0 ]; then
 	echo "success"
 	exit 0
@@ -61,3 +74,4 @@ else
 	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found"
 	exit 1
 fi
+
